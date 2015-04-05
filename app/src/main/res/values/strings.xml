@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Ideas</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
+
+
+    <string name="create_new_idea">Create new idea</string>
+    <string name="something_went_wrong">Something went wrong</string>
+
+    <!--Titles-->
+    <string name="title_activity_list_ideas">Ideas</string>
+    <string name="title_activity_create_idea">Create Idea</string>
+    <string name="title_activity_edit_idea">Edit idea</string>
+
+    <!--Notifications-->
+    <string name="idea_created">Idea created</string>
+    <string name="idea_updated">Idea updated</string>
+    <string name="idea_deleted">Idea deleted</string>
+
+    <!--Confirmation dialog-->
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="delete_this_idea">Do you really want to delete this idea?</string>
+
+    <!--Attributes-->
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+
+    <!--Actions-->
+    <string name="create">Create</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="edit_idea">Edit idea</string>
+    <string name="title_activity_view_idea">View idea</string>
+
+</resources>

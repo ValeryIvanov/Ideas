@@ -1,0 +1,40 @@
+package com.walts.ideas.activities;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.walts.ideas.R;
+import com.walts.ideas.db.Idea;
+import com.walts.ideas.db.IdeasDbHelper;
+
+public class CreateIdeaActivity extends ActionBarActivity {
+
+    private IdeasDbHelper dbHelper = new IdeasDbHelper(this);
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_idea);
+    }
+
+    public void createIdea(View view) {
+        Idea idea = new Idea();
+
+        TextView titleView = (TextView) this.findViewById(R.id.title_editBox);
+        idea.title = titleView.getText().toString();
+
+        TextView descView = (TextView) this.findViewById(R.id.desc_editBox);
+        idea.desc = descView.getText().toString();
+
+        dbHelper.insertIdea(idea);
+
+        Intent intent = new Intent(this, ListIdeasActivity.class);
+        startActivity(intent);
+
+        Toast.makeText(this, R.string.idea_created, Toast.LENGTH_SHORT).show();
+    }
+}
