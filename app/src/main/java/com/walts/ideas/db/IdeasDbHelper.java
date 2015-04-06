@@ -50,22 +50,20 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
         return db.update("idea", values, "id  = ?", new String[] {String.valueOf(idea.id)});
     }
 
-    public void deleteIdea(long id) {
+    public int deleteIdea(long id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String deleteQuery = "DELETE FROM idea WHERE id = '" + id + "'";
-        db.execSQL(deleteQuery);
+        return db.delete("idea", "id = ?", new String[]{String.valueOf(id)});
     }
 
     public Idea getIdea(long id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Idea idea = new Idea();
+        Idea idea = null;
         String selectQuery = "SELECT * FROM idea WHERE id = '" + id + "'";
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
+                idea = new Idea(cursor.getString(1), cursor.getString(2));
                 idea.id = cursor.getLong(0);
-                idea.title = cursor.getString(1);
-                idea.desc = cursor.getString(2);
             } while (cursor.moveToNext());
         }
         return idea;
@@ -78,10 +76,8 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                Idea idea = new Idea();
+                Idea idea = new Idea(cursor.getString(1), cursor.getString(2));
                 idea.id = cursor.getLong(0);
-                idea.title = cursor.getString(1);
-                idea.desc = cursor.getString(2);
                 ideaEntities.add(idea);
             } while (cursor.moveToNext());
         }

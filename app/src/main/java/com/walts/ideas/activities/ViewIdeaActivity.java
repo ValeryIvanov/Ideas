@@ -15,7 +15,10 @@ import com.walts.ideas.db.IdeasDbHelper;
 
 public class ViewIdeaActivity extends ActionBarActivity {
 
+    private static final String TAG = "ViewIdeaActivity";
+
     private Idea idea;
+
     private IdeasDbHelper dbHelper = new IdeasDbHelper(this);
 
     @Override
@@ -23,12 +26,31 @@ public class ViewIdeaActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_idea);
 
-        populateView();
+        Bundle bundle = getIntent().getExtras();
+        long id = bundle.getLong("id");
+        idea = dbHelper.getIdea(id);
+
+        if (idea == null) {
+            //ERROR
+            Intent intent = new Intent(this, ListIdeasActivity.class);
+
+            startActivity(intent);
+            finish();
+
+            Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+        } else {
+            populateView();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(ViewIdeaActivity.this, ListIdeasActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void populateView() {
-        idea = (Idea) getIntent().getSerializableExtra("com.walts.ideas.db.Idea");
-
         TextView titleView = (TextView) this.findViewById(R.id.title_textView);
         titleView.setText(idea.title);
 
@@ -43,21 +65,45 @@ public class ViewIdeaActivity extends ActionBarActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        dbHelper.deleteIdea(idea.id);
+                        int rowsAffected = dbHelper.deleteIdea(idea.id);
+                        if (rowsAffected == 1) {
+                            Intent intent = new Intent(ViewIdeaActivity.this, ListIdeasActivity.class);
+                            startActivity(intent);
+                            finish();
 
-                        Toast.makeText(ViewIdeaActivity.this, R.string.idea_deleted, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ViewIdeaActivity.this, R.string.idea_deleted, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent intent = new Intent(ViewIdeaActivity.this, ListIdeasActivity.class);
 
-                        Intent intent = new Intent(ViewIdeaActivity.this, ListIdeasActivity.class);
-                        startActivity(intent);
+                            startActivity(intent);
+                            finish();
+
+                            Toast.makeText(ViewIdeaActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
     public void editIdea(View view) {
-        Intent intent = new Intent(ViewIdeaActivity.this, EditIdeaActivity.class);
-        intent.putExtra("com.walts.ideas.db.Idea", idea);
-        startActivity(intent);
+        if (idea != null) {
+            Intent intent = new Intent(ViewIdeaActivity.this, EditIdeaActivity.class);
+
+            Bundle bundle = new Bundle();
+            bundle.putLong("id", idea.id);
+            intent.putExtras(bundle);
+
+            startActivity(intent);
+            finish();
+        } else {
+            //ERROR
+            Intent intent = new Intent(this, ListIdeasActivity.class);
+
+            startActivity(intent);
+            finish();
+
+            Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

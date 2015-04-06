@@ -44,8 +44,13 @@ public class ListIdeasActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Idea idea = ideas.get(position);
                 Intent intent = new Intent(ListIdeasActivity.this, ViewIdeaActivity.class);
-                intent.putExtra("com.walts.ideas.db.Idea", idea);
+
+                Bundle bundle = new Bundle();
+                bundle.putLong("id", idea.id);
+                intent.putExtras(bundle);
+
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -59,6 +64,7 @@ public class ListIdeasActivity extends ActionBarActivity {
     public void createNewIdea(View view) {
         Intent intent = new Intent(this, CreateIdeaActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private class IdeasAdapter extends ArrayAdapter<Idea> {

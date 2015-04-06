@@ -15,7 +15,10 @@ import com.walts.ideas.db.IdeasDbHelper;
 
 public class EditIdeaActivity extends ActionBarActivity {
 
+    private static final String TAG = "EditIdeaActivity";
+
     private Idea idea;
+
     private IdeasDbHelper dbHelper = new IdeasDbHelper(this);
 
     @Override
@@ -23,12 +26,24 @@ public class EditIdeaActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_idea);
 
-        populateView();
+        Bundle bundle = getIntent().getExtras();
+        long id = bundle.getLong("id");
+        idea = dbHelper.getIdea(id);
+
+        if (idea == null) {
+            //ERROR
+            Intent intent = new Intent(this, ListIdeasActivity.class);
+
+            startActivity(intent);
+            finish();
+
+            Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+        } else {
+            populateView();
+        }
     }
 
     private void populateView() {
-        idea = (Idea) getIntent().getSerializableExtra("com.walts.ideas.db.Idea");
-
         TextView titleView = (TextView) this.findViewById(R.id.title_editBox);
         titleView.setText(idea.title);
 
@@ -53,10 +68,23 @@ public class EditIdeaActivity extends ActionBarActivity {
             int rowsAffected = dbHelper.updateIdea(idea);
 
             if (rowsAffected == 1) {
-                Toast.makeText(this, R.string.idea_updated, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, ListIdeasActivity.class);
+                Intent intent = new Intent(this, ViewIdeaActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putLong("id", idea.id);
+                intent.putExtras(bundle);
+
                 startActivity(intent);
+                finish();
+
+                Toast.makeText(this, R.string.idea_updated, Toast.LENGTH_SHORT).show();
             } else {
+                //ERROR
+                Intent intent = new Intent(this, ListIdeasActivity.class);
+
+                startActivity(intent);
+                finish();
+
                 Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
             }
         }
@@ -69,12 +97,21 @@ public class EditIdeaActivity extends ActionBarActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        dbHelper.deleteIdea(idea.id);
+                        int rowsAffected = dbHelper.deleteIdea(idea.id);
+                        if (rowsAffected == 1) {
+                            Intent intent = new Intent(EditIdeaActivity.this, ListIdeasActivity.class);
+                            startActivity(intent);
+                            finish();
 
-                        Toast.makeText(EditIdeaActivity.this, R.string.idea_deleted, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditIdeaActivity.this, R.string.idea_deleted, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent intent = new Intent(EditIdeaActivity.this, ListIdeasActivity.class);
 
-                        Intent intent = new Intent(EditIdeaActivity.this, ListIdeasActivity.class);
-                        startActivity(intent);
+                            startActivity(intent);
+                            finish();
+
+                            Toast.makeText(EditIdeaActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                        }
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
     }

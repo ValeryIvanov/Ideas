@@ -8,4 +8,17 @@ public class Idea implements Serializable {
     public String title;
     public String desc;
 
+    public Idea(String title, String desc) {
+        this.title = title;
+        this.desc = desc;
+    }
+
+    @Override
+    public String toString() {
+        return "Idea{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", desc='" + desc + '\'' +
+                '}';
+    }
 }

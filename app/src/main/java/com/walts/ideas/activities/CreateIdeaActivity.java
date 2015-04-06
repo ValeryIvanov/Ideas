@@ -13,6 +13,8 @@ import com.walts.ideas.db.IdeasDbHelper;
 
 public class CreateIdeaActivity extends ActionBarActivity {
 
+    private static final String TAG = "CreateIdeaActivity";
+
     private IdeasDbHelper dbHelper = new IdeasDbHelper(this);
 
     @Override
@@ -33,16 +35,30 @@ public class CreateIdeaActivity extends ActionBarActivity {
         } else if (desc.equals("")) {
             descView.setError(getString(R.string.desc_required));
         } else {
-            Idea idea = new Idea();
-            idea.title = title;
-            idea.desc = desc;
+            Idea idea = new Idea(title, desc);
 
-            dbHelper.insertIdea(idea);
+            long id = dbHelper.insertIdea(idea);
+            if (id == -1) {
+                //ERROR
+                Intent intent = new Intent(this, ListIdeasActivity.class);
 
-            Intent intent = new Intent(this, ListIdeasActivity.class);
-            startActivity(intent);
+                startActivity(intent);
+                finish();
 
-            Toast.makeText(this, R.string.idea_created, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(this, ViewIdeaActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putLong("id", id);
+                intent.putExtras(bundle);
+
+                startActivity(intent);
+                finish();
+
+                Toast.makeText(this, R.string.idea_created, Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 }
