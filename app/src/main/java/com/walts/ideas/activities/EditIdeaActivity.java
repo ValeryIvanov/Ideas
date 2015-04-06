@@ -38,21 +38,28 @@ public class EditIdeaActivity extends ActionBarActivity {
 
     public void saveIdea(View view) {
         TextView titleView = (TextView) this.findViewById(R.id.title_editBox);
-        idea.title = titleView.getText().toString();
+        String title = titleView.getText().toString().trim();
 
         TextView descView = (TextView) this.findViewById(R.id.desc_editBox);
-        idea.desc = descView.getText().toString();
+        String desc = descView.getText().toString().trim();
 
-        int rowsAffected = dbHelper.updateIdea(idea);
-
-        if (rowsAffected == 1) {
-            Toast.makeText(this, R.string.idea_updated, Toast.LENGTH_SHORT).show();
+        if (title.equals("")) {
+            titleView.setError(getString(R.string.title_required));
+        } else if (desc.equals("")) {
+            descView.setError(getString(R.string.desc_required));
         } else {
-            Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
-        }
+            idea.title = title;
+            idea.desc = desc;
+            int rowsAffected = dbHelper.updateIdea(idea);
 
-        Intent intent = new Intent(this, ListIdeasActivity.class);
-        startActivity(intent);
+            if (rowsAffected == 1) {
+                Toast.makeText(this, R.string.idea_updated, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ListIdeasActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public void deleteIdea(View view) {

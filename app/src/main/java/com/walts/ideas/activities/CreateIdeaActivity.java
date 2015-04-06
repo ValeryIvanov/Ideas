@@ -22,19 +22,27 @@ public class CreateIdeaActivity extends ActionBarActivity {
     }
 
     public void createIdea(View view) {
-        Idea idea = new Idea();
-
         TextView titleView = (TextView) this.findViewById(R.id.title_editBox);
-        idea.title = titleView.getText().toString();
+        String title = titleView.getText().toString().trim();
 
         TextView descView = (TextView) this.findViewById(R.id.desc_editBox);
-        idea.desc = descView.getText().toString();
+        String desc = descView.getText().toString().trim();
 
-        dbHelper.insertIdea(idea);
+        if (title.equals("")) {
+            titleView.setError(getString(R.string.title_required));
+        } else if (desc.equals("")) {
+            descView.setError(getString(R.string.desc_required));
+        } else {
+            Idea idea = new Idea();
+            idea.title = title;
+            idea.desc = desc;
 
-        Intent intent = new Intent(this, ListIdeasActivity.class);
-        startActivity(intent);
+            dbHelper.insertIdea(idea);
 
-        Toast.makeText(this, R.string.idea_created, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, ListIdeasActivity.class);
+            startActivity(intent);
+
+            Toast.makeText(this, R.string.idea_created, Toast.LENGTH_SHORT).show();
+        }
     }
 }
