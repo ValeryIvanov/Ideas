@@ -38,7 +38,6 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
         values.put("title", idea.title);
         values.put("desc", idea.desc);
         long newId = db.insert("idea", null, values);
-        db.close();
         return newId;
     }
 
