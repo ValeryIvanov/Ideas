@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +61,13 @@ public class ViewIdeaActivity extends ActionBarActivity {
 
         TextView createdDateView = (TextView) this.findViewById(R.id.createdDate_textView);
         createdDateView.setText(idea.createdDate);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_view_idea, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     public void deleteIdea(View view) {

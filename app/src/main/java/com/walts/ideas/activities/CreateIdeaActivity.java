@@ -3,6 +3,8 @@ package com.walts.ideas.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,13 @@ public class CreateIdeaActivity extends ActionBarActivity {
         Intent intent = new Intent(this, ListIdeasActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_create_idea, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     public void createIdea(View view) {
