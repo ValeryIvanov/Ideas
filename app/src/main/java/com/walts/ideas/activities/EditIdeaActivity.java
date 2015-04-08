@@ -69,6 +69,7 @@ public class EditIdeaActivity extends ActionBarActivity {
 
             if (rowsAffected == 1) {
                 Intent intent = new Intent(this, ViewIdeaActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //finishes view activity
 
                 Bundle bundle = new Bundle();
                 bundle.putLong("id", idea.id);
@@ -81,6 +82,7 @@ public class EditIdeaActivity extends ActionBarActivity {
             } else {
                 //ERROR
                 Intent intent = new Intent(this, ListIdeasActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //finishes view activity
 
                 startActivity(intent);
                 finish();

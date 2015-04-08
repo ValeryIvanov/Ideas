@@ -94,7 +94,6 @@ public class ViewIdeaActivity extends ActionBarActivity {
             intent.putExtras(bundle);
 
             startActivity(intent);
-            finish();
         } else {
             //ERROR
             Intent intent = new Intent(this, ListIdeasActivity.class);

@@ -23,6 +23,13 @@ public class CreateIdeaActivity extends ActionBarActivity {
         setContentView(R.layout.activity_create_idea);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, ListIdeasActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     public void createIdea(View view) {
         TextView titleView = (TextView) this.findViewById(R.id.title_editBox);
         String title = titleView.getText().toString().trim();
