@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class IdeasDbHelper extends SQLiteOpenHelper {
 
     //, created DATETIME DEFAULT CURRENT_TIMESTAMP
-    private static final String SQL_CREATE_TABLES = "CREATE TABLE idea (id INTEGER PRIMARY KEY, title TEXT, desc TEXT)";
+    private static final String SQL_CREATE_TABLES = "CREATE TABLE idea (id INTEGER PRIMARY KEY, title TEXT, desc TEXT, created_date DATE DEFAULT (datetime('now','localtime')))";
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ideas";
 
     public static final int DATABASE_VERSION = 1;
@@ -64,6 +64,7 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
             do {
                 idea = new Idea(cursor.getString(1), cursor.getString(2));
                 idea.id = cursor.getLong(0);
+                idea.createdDate = cursor.getString(3);
             } while (cursor.moveToNext());
         }
         return idea;
@@ -78,6 +79,7 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
             do {
                 Idea idea = new Idea(cursor.getString(1), cursor.getString(2));
                 idea.id = cursor.getLong(0);
+                idea.createdDate = cursor.getString(3);
                 ideaEntities.add(idea);
             } while (cursor.moveToNext());
         }

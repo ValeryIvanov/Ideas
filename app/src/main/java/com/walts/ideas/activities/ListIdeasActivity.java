@@ -85,6 +85,9 @@ public class ListIdeasActivity extends ActionBarActivity {
             TextView descView = (TextView) itemView.findViewById(R.id.desc);
             descView.setText(idea.desc);
 
+            TextView createdDateView = (TextView) itemView.findViewById(R.id.createdDate);
+            createdDateView.setText(idea.createdDate);
+
             return itemView;
         }
     }

@@ -7,6 +7,7 @@ public class Idea implements Serializable {
     public long id;
     public String title;
     public String desc;
+    public String createdDate;
 
     public Idea(String title, String desc) {
         this.title = title;

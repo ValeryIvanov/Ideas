@@ -17,9 +17,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/createdDate"
+        android:id="@+id/createdDate"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/description"
         android:id="@+id/desc"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/createdDate"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

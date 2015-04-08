@@ -37,5 +37,6 @@
     <!--Errors-->
     <string name="title_required">Title is required!</string>
     <string name="desc_required">Description is required!</string>
+    <string name="createdDate">Created date</string>
 
 </resources>

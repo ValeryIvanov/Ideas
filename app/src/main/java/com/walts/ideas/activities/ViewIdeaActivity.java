@@ -56,6 +56,9 @@ public class ViewIdeaActivity extends ActionBarActivity {
 
         TextView descView = (TextView) this.findViewById(R.id.desc_textView);
         descView.setText(idea.desc);
+
+        TextView createdDateView = (TextView) this.findViewById(R.id.createdDate_textView);
+        createdDateView.setText(idea.createdDate);
     }
 
     public void deleteIdea(View view) {
