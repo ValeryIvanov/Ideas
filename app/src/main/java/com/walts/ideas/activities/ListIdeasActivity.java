@@ -1,6 +1,5 @@
 package com.walts.ideas.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -8,19 +7,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import com.walts.ideas.IdeasAdapter;
 import com.walts.ideas.R;
 import com.walts.ideas.db.Idea;
 import com.walts.ideas.db.IdeasDbHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 
@@ -80,6 +76,9 @@ public class ListIdeasActivity extends ActionBarActivity {
             case R.id.sort_by_title:
                 arrayAdapter.sortByTitle();
                 return true;
+            case R.id.sort_by_created_date:
+                arrayAdapter.sortByCreatedDate();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -97,41 +96,5 @@ public class ListIdeasActivity extends ActionBarActivity {
         finish();
     }
 
-    private class IdeasAdapter extends ArrayAdapter<Idea> {
-
-        public IdeasAdapter(Context context, int resource, List<Idea> objects) {
-            super(context, resource, objects);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View itemView = convertView;
-            if (itemView == null) {
-                itemView = getLayoutInflater().inflate(R.layout.idea, parent, false);
-            }
-            Idea idea = getItem(position);
-
-            TextView titleView = (TextView) itemView.findViewById(R.id.title);
-            titleView.setText(idea.title);
-
-            TextView descView = (TextView) itemView.findViewById(R.id.desc);
-            descView.setText(idea.desc);
-
-            TextView createdDateView = (TextView) itemView.findViewById(R.id.createdDate);
-            createdDateView.setText(idea.createdDate);
-
-            return itemView;
-        }
-
-        public void sortByTitle() {
-            this.sort(new Comparator<Idea>() {
-                @Override
-                public int compare(Idea idea1, Idea idea2) {
-                    return idea2.title.compareTo(idea1.title);
-                }
-            });
-        }
-
-    }
 
 }

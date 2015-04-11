@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.walts.ideas.CommonFunctions;
 import com.walts.ideas.R;
 import com.walts.ideas.db.Idea;
 import com.walts.ideas.db.IdeasDbHelper;
@@ -102,28 +103,6 @@ public class EditIdeaActivity extends ActionBarActivity {
     }
 
     public void deleteIdea(View view) {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.are_you_sure)
-                .setMessage(R.string.delete_this_idea)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        int rowsAffected = dbHelper.deleteIdea(idea.id);
-                        if (rowsAffected == 1) {
-                            Intent intent = new Intent(EditIdeaActivity.this, ListIdeasActivity.class);
-                            startActivity(intent);
-                            finish();
-
-                            Toast.makeText(EditIdeaActivity.this, R.string.idea_deleted, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Intent intent = new Intent(EditIdeaActivity.this, ListIdeasActivity.class);
-
-                            startActivity(intent);
-                            finish();
-
-                            Toast.makeText(EditIdeaActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
-                        }
-                    }})
-                .setNegativeButton(android.R.string.no, null).show();
+        CommonFunctions.showDeleteDialog(this, dbHelper, idea);
     }
 }

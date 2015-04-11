@@ -39,5 +39,6 @@
     <string name="desc_required">Description is required!</string>
     <string name="createdDate">Created date</string>
     <string name="action_sort_by_title">Sort by title</string>
+    <string name="action_sort_by_created_date">Sort by created date</string>
 
 </resources>

@@ -15,4 +15,10 @@
         app:showAsAction="never"
         />
 
+    <item
+        android:id="@+id/sort_by_created_date"
+        android:title="@string/action_sort_by_created_date"
+        app:showAsAction="never"
+        />
+
 </menu>
