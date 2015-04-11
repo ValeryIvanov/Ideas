@@ -40,8 +40,10 @@ public class IdeasAdapter extends ArrayAdapter<Idea> {
         TextView titleView = (TextView) itemView.findViewById(R.id.title);
         titleView.setText(idea.title);
 
-        TextView descView = (TextView) itemView.findViewById(R.id.desc);
-        descView.setText(idea.desc);
+        if (idea.password == null || idea.password.length() == 0) { //show idea's desc only if it is not password protected
+            TextView descView = (TextView) itemView.findViewById(R.id.desc);
+            descView.setText(idea.desc);
+        }
 
         TextView createdDateView = (TextView) itemView.findViewById(R.id.createdDate);
         createdDateView.setText(idea.createdDate);

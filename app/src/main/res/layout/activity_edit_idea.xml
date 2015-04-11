@@ -34,6 +34,12 @@
         />
 
     <Button
+        android:id="@+id/password_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="deleteIdea"

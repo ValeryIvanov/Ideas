@@ -5,16 +5,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.walts.ideas.CommonFunctions;
+import com.walts.ideas.Dialogs;
 import com.walts.ideas.R;
 import com.walts.ideas.db.Idea;
 import com.walts.ideas.db.IdeasDbHelper;
+
+import java.util.concurrent.Callable;
 
 public class EditIdeaActivity extends ActionBarActivity {
 
@@ -22,7 +27,7 @@ public class EditIdeaActivity extends ActionBarActivity {
 
     private Idea idea;
 
-    private IdeasDbHelper dbHelper = new IdeasDbHelper(this);
+    private IdeasDbHelper dbHelper = IdeasDbHelper.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,80 @@ public class EditIdeaActivity extends ActionBarActivity {
         }
     }
 
+    private View.OnClickListener removePasswordOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(final View v) {
+            Callable function = new Callable() {
+                @Override
+                public Object call() throws Exception {
+                    Button passwordButton = (Button) v;
+                    int rowsAffected = dbHelper.removePassword(idea);
+                    if (rowsAffected == 1) {
+                        passwordButton.setText(R.string.password_protect);
+                        passwordButton.setOnClickListener(passwordProtectOnClickListener);
+                        Toast.makeText(EditIdeaActivity.this, getString(R.string.password_removed), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(EditIdeaActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                    }
+                    return null;
+                }
+            };
+            Dialogs.showConfirmationDialog(EditIdeaActivity.this, getResources().getString(R.string.remove_password_question), function);
+        }
+    };
+
+    private View.OnClickListener passwordProtectOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final Button passwordButton = (Button) v;
+
+            final EditText editText = new EditText(EditIdeaActivity.this);
+            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+            final AlertDialog alertDialog = new AlertDialog.Builder(EditIdeaActivity.this)
+                    .setView(editText)
+                    .setTitle(R.string.password_protect)
+                    .setMessage(R.string.password_protect_desc)
+                    .setIcon(android.R.drawable.ic_lock_idle_lock)
+                    .setPositiveButton(R.string.password_protect, null)
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create();
+
+            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            String password = editText.getText().toString();
+                            if (password.length() == 0) {
+                                editText.setError(getString(R.string.password_required));
+                            } else {
+                                idea.password = editText.getText().toString();
+
+                                int rowsAffected = dbHelper.addPassword(idea);
+
+                                if (rowsAffected == 1) {
+                                    passwordButton.setText(getString(R.string.remove_password));
+                                    passwordButton.setOnClickListener(removePasswordOnClickListener);
+
+                                    Toast.makeText(EditIdeaActivity.this, R.string.password_added, Toast.LENGTH_SHORT).show();
+                                    alertDialog.dismiss();
+                                } else {
+                                    Toast.makeText(EditIdeaActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        }
+                    });
+                }
+            });
+            alertDialog.show();
+        }
+    };
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -59,6 +138,15 @@ public class EditIdeaActivity extends ActionBarActivity {
 
         TextView descView = (TextView) this.findViewById(R.id.desc_editBox);
         descView.setText(idea.desc);
+
+        Button passwordButton = (Button) this.findViewById(R.id.password_button);
+        if (idea.password != null && idea.password.length() > 0) {
+            passwordButton.setText(getString(R.string.remove_password));
+            passwordButton.setOnClickListener(removePasswordOnClickListener);
+        } else {
+            passwordButton.setText(R.string.password_protect);
+            passwordButton.setOnClickListener(passwordProtectOnClickListener);
+        }
     }
 
     public void saveIdea(View view) {
@@ -103,6 +191,7 @@ public class EditIdeaActivity extends ActionBarActivity {
     }
 
     public void deleteIdea(View view) {
-        CommonFunctions.showDeleteDialog(this, dbHelper, idea);
+        Dialogs.showDeleteDialog(this, idea);
     }
+
 }

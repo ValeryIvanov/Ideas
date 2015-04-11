@@ -37,8 +37,19 @@
     <!--Errors-->
     <string name="title_required">Title is required!</string>
     <string name="desc_required">Description is required!</string>
-    <string name="createdDate">Created date</string>
+
+    <string name="created_date">Created date</string>
     <string name="action_sort_by_title">Sort by title</string>
     <string name="action_sort_by_created_date">Sort by created date</string>
+
+    <string name="password_protect">Password protect</string>
+    <string name="password_protect_desc">Edit idea\'s title, so that others could not understand what You meant under it! Only title will be visible in list view. Remember this password or You will not get access to this idea any more!</string>
+    <string name="remove_password">Remove password</string>
+    <string name="password_removed">Password removed</string>
+    <string name="password_added">Password added</string>
+    <string name="password_required">Password required</string>
+    <string name="remove_password_question">Remove password?</string>
+    <string name="enter_password">Enter password</string>
+    <string name="wrong_password">Wrong password!</string>
 
 </resources>

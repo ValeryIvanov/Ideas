@@ -30,7 +30,7 @@ public class DatabaseTest extends AndroidTestCase {
 
         RenamingDelegatingContext context = new RenamingDelegatingContext(getContext(), TEST_FILE_PREFIX);
 
-        dbHelper = new IdeasDbHelper(context);
+        dbHelper = IdeasDbHelper.getInstance(context);
     }
 
     @Override
@@ -79,6 +79,8 @@ public class DatabaseTest extends AndroidTestCase {
         dbHelper.deleteIdea(id1);
 
         assertEquals(null, dbHelper.getIdea(id1));
+
+        //TODO password
     }
 
 }

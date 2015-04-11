@@ -17,7 +17,7 @@ public class CreateIdeaActivity extends ActionBarActivity {
 
     private static final String TAG = "CreateIdeaActivity";
 
-    private IdeasDbHelper dbHelper = new IdeasDbHelper(this);
+    private IdeasDbHelper dbHelper = IdeasDbHelper.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,18 +63,21 @@ public class CreateIdeaActivity extends ActionBarActivity {
 
                 Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
             } else {
-                Intent intent = new Intent(this, ViewIdeaActivity.class);
-
-                Bundle bundle = new Bundle();
-                bundle.putLong("id", id);
-                intent.putExtras(bundle);
-
-                startActivity(intent);
-                finish();
-
-                Toast.makeText(this, R.string.idea_created, Toast.LENGTH_SHORT).show();
+                viewIdea(id);
             }
-
         }
+    }
+
+    private void viewIdea(long id) {
+        Intent intent = new Intent(this, ViewIdeaActivity.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putLong("id", id);
+        intent.putExtras(bundle);
+
+        startActivity(intent);
+        finish();
+
+        Toast.makeText(this, R.string.idea_created, Toast.LENGTH_SHORT).show();
     }
 }

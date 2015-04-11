@@ -8,6 +8,7 @@ public class Idea implements Serializable {
     public String title;
     public String desc;
     public String createdDate;
+    public String password; //SHA1
 
     public Idea(String title, String desc) {
         this.title = title;
@@ -20,6 +21,8 @@ public class Idea implements Serializable {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", desc='" + desc + '\'' +
+                ", createdDate='" + createdDate + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

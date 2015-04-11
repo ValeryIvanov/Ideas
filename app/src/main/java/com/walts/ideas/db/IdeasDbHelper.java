@@ -6,18 +6,31 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.walts.ideas.SHA1;
+
 import java.util.ArrayList;
 
 public class IdeasDbHelper extends SQLiteOpenHelper {
 
-    //, created DATETIME DEFAULT CURRENT_TIMESTAMP
-    private static final String SQL_CREATE_TABLES = "CREATE TABLE idea (id INTEGER PRIMARY KEY, title TEXT, desc TEXT, created_date DATE DEFAULT (datetime('now','localtime')))";
+    private static IdeasDbHelper dbHelper = null;
+
+    private static final String TAG = "IdeasDbHelper";
+
+    private static final String SQL_CREATE_TABLES = "CREATE TABLE idea (id INTEGER PRIMARY KEY, title TEXT, desc TEXT, created_date DATE DEFAULT (datetime('now','localtime')), password TEXT)";
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ideas";
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Ideas.db";
 
-    public IdeasDbHelper(Context context) {
+    //http://stackoverflow.com/questions/18147354/sqlite-connection-leaked-although-everything-closed
+    public static IdeasDbHelper getInstance(Context context) {
+        if (dbHelper == null) {
+            dbHelper = new IdeasDbHelper(context.getApplicationContext());
+        }
+        return dbHelper;
+    }
+
+    private IdeasDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -37,8 +50,7 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("title", idea.title);
         values.put("desc", idea.desc);
-        long newId = db.insert("idea", null, values);
-        return newId;
+        return db.insert("idea", null, values);
     }
 
     public int updateIdea(Idea idea) {
@@ -64,8 +76,10 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
                 idea = new Idea(cursor.getString(1), cursor.getString(2));
                 idea.id = cursor.getLong(0);
                 idea.createdDate = cursor.getString(3);
+                idea.password = cursor.getString(4);
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return idea;
     }
 
@@ -79,10 +93,25 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
                 Idea idea = new Idea(cursor.getString(1), cursor.getString(2));
                 idea.id = cursor.getLong(0);
                 idea.createdDate = cursor.getString(3);
+                idea.password = cursor.getString(4);
                 ideaEntities.add(idea);
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return ideaEntities;
     }
 
+    public int removePassword(Idea idea) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("password", "");
+        return db.update("idea", values, "id  = ?", new String[] {String.valueOf(idea.id)});
+    }
+
+    public int addPassword(Idea idea) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("password", SHA1.sha1Hash(idea.password));
+        return db.update("idea", values, "id  = ?", new String[] {String.valueOf(idea.id)});
+    }
 }

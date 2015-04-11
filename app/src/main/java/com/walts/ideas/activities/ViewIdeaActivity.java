@@ -1,7 +1,5 @@
 package com.walts.ideas.activities;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -11,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.walts.ideas.CommonFunctions;
+import com.walts.ideas.Dialogs;
 import com.walts.ideas.R;
 import com.walts.ideas.db.Idea;
 import com.walts.ideas.db.IdeasDbHelper;
@@ -22,13 +20,17 @@ public class ViewIdeaActivity extends ActionBarActivity {
 
     private Idea idea;
 
-    private IdeasDbHelper dbHelper = new IdeasDbHelper(this);
+    private IdeasDbHelper dbHelper = IdeasDbHelper.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_idea);
 
+        populateIdea();
+    }
+
+    private void populateIdea() {
         Bundle bundle = getIntent().getExtras();
         long id = bundle.getLong("id");
         idea = dbHelper.getIdea(id);
@@ -72,7 +74,7 @@ public class ViewIdeaActivity extends ActionBarActivity {
     }
 
     public void deleteIdea(View view) {
-        CommonFunctions.showDeleteDialog(this, dbHelper, idea);
+        Dialogs.showDeleteDialog(this, idea);
     }
 
     public void editIdea(View view) {
