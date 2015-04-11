@@ -9,4 +9,10 @@
         app:showAsAction="never"
         />
 
+    <item
+        android:id="@+id/sort_by_title"
+        android:title="@string/action_sort_by_title"
+        app:showAsAction="never"
+        />
+
 </menu>

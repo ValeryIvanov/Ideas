@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,6 +19,8 @@ import com.walts.ideas.db.Idea;
 import com.walts.ideas.db.IdeasDbHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -26,17 +29,23 @@ public class ListIdeasActivity extends ActionBarActivity {
     private static final String TAG = "ListIdeasActivity";
 
     private List<Idea> ideas = new ArrayList<>();
+    private IdeasAdapter arrayAdapter;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_ideas);
 
-        IdeasDbHelper dbHelper = new IdeasDbHelper(this);
-        ideas = dbHelper.getAllIdeas();
-
+        populateIdeas();
         populateListView();
         registerClickCallback();
+    }
+
+    private void populateIdeas() {
+        IdeasDbHelper dbHelper = new IdeasDbHelper(this);
+        ideas = dbHelper.getAllIdeas();
+        Collections.reverse(ideas); //show newest first
     }
 
     @Override
@@ -47,7 +56,6 @@ public class ListIdeasActivity extends ActionBarActivity {
     }
 
     private void registerClickCallback() {
-        ListView listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -64,9 +72,22 @@ public class ListIdeasActivity extends ActionBarActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+            case R.id.sort_by_title:
+                arrayAdapter.sortByTitle();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void populateListView() {
-        ArrayAdapter<Idea> arrayAdapter = new IdeasAdapter(this, R.layout.idea, ideas);
-        ListView listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
+        arrayAdapter = new IdeasAdapter(this, R.layout.idea, ideas);
         listView.setAdapter(arrayAdapter);
     }
 
@@ -77,9 +98,11 @@ public class ListIdeasActivity extends ActionBarActivity {
     }
 
     private class IdeasAdapter extends ArrayAdapter<Idea> {
+
         public IdeasAdapter(Context context, int resource, List<Idea> objects) {
             super(context, resource, objects);
         }
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
@@ -99,6 +122,16 @@ public class ListIdeasActivity extends ActionBarActivity {
 
             return itemView;
         }
+
+        public void sortByTitle() {
+            this.sort(new Comparator<Idea>() {
+                @Override
+                public int compare(Idea idea1, Idea idea2) {
+                    return idea2.title.compareTo(idea1.title);
+                }
+            });
+        }
+
     }
 
 }

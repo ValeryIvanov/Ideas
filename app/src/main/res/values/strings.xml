@@ -38,5 +38,6 @@
     <string name="title_required">Title is required!</string>
     <string name="desc_required">Description is required!</string>
     <string name="createdDate">Created date</string>
+    <string name="action_sort_by_title">Sort by title</string>
 
 </resources>
