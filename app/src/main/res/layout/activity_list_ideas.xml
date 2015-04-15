@@ -13,8 +13,14 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/create_new_idea"
-        android:id="@+id/create_new_idea_button"
         android:onClick="createNewIdea"
+        />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Get location"
+        android:onClick="getLocation"
         />
 
     <ListView

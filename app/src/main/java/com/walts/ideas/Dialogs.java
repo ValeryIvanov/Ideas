@@ -3,6 +3,7 @@ package com.walts.ideas;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 
@@ -59,6 +60,23 @@ public class Dialogs {
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).show();
+    }
+
+    public static void showAlertMessage(final ActionBarActivity activity, final Intent intent, String message) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        activity.startActivity(intent);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 
 }
