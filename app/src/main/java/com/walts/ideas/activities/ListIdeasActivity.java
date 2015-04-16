@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.walts.ideas.Dialogs;
@@ -150,7 +151,10 @@ public class ListIdeasActivity extends ActionBarActivity {
         finish();
     }
 
-    public void getLocation(View view) {
+    public void getLocation(final View view) {
+        view.setEnabled(false);
+        final ProgressBar progressBar = (android.widget.ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         LocationHelper.LocationResult locationResult = new LocationHelper.LocationResult() {
             @Override
             public void gotLocation(final Location location){
@@ -162,11 +166,17 @@ public class ListIdeasActivity extends ActionBarActivity {
                         } else {
                             Dialogs.showAlertMessage(ListIdeasActivity.this, new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), getString(R.string.location_null));
                         }
+                        progressBar.setVisibility(View.GONE);
+                        view.setEnabled(true);
                     }
                 });
             }
         };
-        locationHelper.requestLocation(locationResult);
+        boolean requestSuccessful = locationHelper.requestLocation(locationResult);
+        if (!requestSuccessful) {
+            progressBar.setVisibility(View.GONE);
+            view.setEnabled(true);
+        }
     }
 
 }

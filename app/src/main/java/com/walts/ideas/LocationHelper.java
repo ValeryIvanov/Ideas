@@ -48,7 +48,7 @@ public class LocationHelper {
         this.activity = activity;
     }
 
-    public void requestLocation(LocationResult result) {
+    public boolean requestLocation(LocationResult result) {
         locationResult = result;
 
         gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -56,10 +56,12 @@ public class LocationHelper {
 
         if (!isNetworkAvailable(activity)) {
             Dialogs.showAlertMessage(activity, new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK), "Your Internet access seems to be disabled, do you want to enable it?");
+            return false;
         } else {
             if (!gpsEnabled && !networkEnabled) {
                 Log.d(TAG, "GPS and network provider not enabled.");
                 Dialogs.showAlertMessage(activity, new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), "Your GPS seems to be disabled, do you want to enable it?");
+                return false;
             } else {
                 if (gpsEnabled) {
                     Log.d(TAG, "GPS provider enabled. Requesting updates from GPS provider.");
@@ -69,8 +71,10 @@ public class LocationHelper {
                     Log.d(TAG, "Network provider enabled. Requesting updates from network provider.");
                     locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerNetwork);
                 }
+                final long delayTime = 5000;
                 timer = new Timer();
-                timer.schedule(new GetLastLocation(), 15000);
+                timer.schedule(new GetLastLocation(), delayTime);
+                return true;
             }
         }
     }
