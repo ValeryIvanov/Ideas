@@ -9,6 +9,9 @@ public class Idea implements Serializable {
     public String desc;
     public String createdDate;
     public String password; //SHA1
+    public double latitude;
+    public double longitude;
+    public String address;
 
     public Idea(String title, String desc) {
         this.title = title;
@@ -23,6 +26,10 @@ public class Idea implements Serializable {
                 ", desc='" + desc + '\'' +
                 ", createdDate='" + createdDate + '\'' +
                 ", password='" + password + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", address='" + address + '\'' +
                 '}';
     }
+
 }

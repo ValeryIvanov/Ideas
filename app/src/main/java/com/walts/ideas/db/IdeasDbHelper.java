@@ -16,7 +16,15 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "IdeasDbHelper";
 
-    private static final String SQL_CREATE_TABLES = "CREATE TABLE idea (id INTEGER PRIMARY KEY, title TEXT, desc TEXT, created_date DATE DEFAULT (datetime('now','localtime')), password TEXT)";
+    private static final String SQL_CREATE_TABLES = "CREATE TABLE idea (" +
+            "id INTEGER PRIMARY KEY, " +
+            "title TEXT, desc TEXT, " +
+            "created_date DATE DEFAULT (datetime('now','localtime')), " +
+            "password TEXT, " +
+            "latitude REAL, " +
+            "longitude REAL, " +
+            "address TEXT" +
+            ")";
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ideas";
 
     public static final int DATABASE_VERSION = 1;
@@ -50,6 +58,9 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("title", idea.title);
         values.put("desc", idea.desc);
+        values.put("latitude", idea.latitude);
+        values.put("longitude", idea.longitude);
+        values.put("address", idea.address);
         return db.insert("idea", null, values);
     }
 
@@ -77,6 +88,9 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
                 idea.id = cursor.getLong(0);
                 idea.createdDate = cursor.getString(3);
                 idea.password = cursor.getString(4);
+                idea.latitude = cursor.getDouble(5);
+                idea.longitude = cursor.getDouble(6);
+                idea.address = cursor.getString(7);
             } while (cursor.moveToNext());
         }
         cursor.close();
