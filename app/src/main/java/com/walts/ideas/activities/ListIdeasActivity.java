@@ -1,13 +1,9 @@
 package com.walts.ideas.activities;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
@@ -25,8 +21,6 @@ import android.widget.Toast;
 import com.walts.ideas.Dialogs;
 import com.walts.ideas.IdeasAdapter;
 import com.walts.ideas.LocationHelper;
-import com.walts.ideas.LocationResult;
-import com.walts.ideas.MyLocation;
 import com.walts.ideas.R;
 import com.walts.ideas.SHA1;
 import com.walts.ideas.db.Idea;
@@ -52,7 +46,6 @@ public class ListIdeasActivity extends ActionBarActivity {
         setContentView(R.layout.activity_list_ideas);
 
         locationHelper = new LocationHelper(this);
-        //locationHelper.startLocationUpdates();
 
         populateIdeas();
         populateListView();
@@ -158,43 +151,22 @@ public class ListIdeasActivity extends ActionBarActivity {
     }
 
     public void getLocation(View view) {
-
-        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Dialogs.showAlertMessage(this, new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), "Your GPS seems to be disabled, do you want to enable it?");
-        } else if (!isNetworkAvailable()) {
-            Dialogs.showAlertMessage(this, new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS), "Your Internet access seems to be disabled, do you want to enable it?");
-        } else {
-            LocationResult locationResult = new LocationResult(){
-                @Override
-                public void gotLocation(final Location location){
-                    ListIdeasActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (location != null) {
-                                Toast.makeText(ListIdeasActivity.this, "Latitude : " + location.getLatitude() + ", longitude : " + location.getLongitude() + ", location is : " + locationHelper.getAddress(location.getLatitude(), location.getLongitude()), Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(ListIdeasActivity.this, "Could not get location", Toast.LENGTH_SHORT).show();
-                            }
+        LocationHelper.LocationResult locationResult = new LocationHelper.LocationResult() {
+            @Override
+            public void gotLocation(final Location location){
+                ListIdeasActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (location != null) {
+                            Toast.makeText(ListIdeasActivity.this, "Latitude : " + location.getLatitude() + ", longitude : " + location.getLongitude() + ", location is : " + locationHelper.getAddress(location.getLatitude(), location.getLongitude()), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Dialogs.showAlertMessage(ListIdeasActivity.this, new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), getString(R.string.location_null));
                         }
-                    });
-                }
-            };
-            MyLocation myLocation = new MyLocation(this);
-            myLocation.canGetLocation(locationResult);
-        }
-
-        /*
-        String location = locationHelper.getLocation();
-        Toast.makeText(this, "Your current location is : " + location, Toast.LENGTH_SHORT).show();
-        */
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected() && networkInfo.isAvailable();
+                    }
+                });
+            }
+        };
+        locationHelper.requestLocation(locationResult);
     }
 
 }

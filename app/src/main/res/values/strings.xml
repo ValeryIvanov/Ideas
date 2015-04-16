@@ -51,5 +51,6 @@
     <string name="remove_password_question">Remove password?</string>
     <string name="enter_password">Enter password</string>
     <string name="wrong_password">Wrong password!</string>
+    <string name="location_null">Could not get location. GPS does not work well inside building. Try to get location with network instead. Change settings?</string>
 
 </resources>
