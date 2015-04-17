@@ -121,6 +121,7 @@ public class CreateIdeaActivity extends ActionBarActivity {
                             if (location != null) {
                                 CreateIdeaActivity.this.location = location;
                                 String address = locationHelper.getAddress(location.getLatitude(), location.getLongitude());
+                                CreateIdeaActivity.this.address = address;
 
                                 progressBar.setVisibility(View.GONE);
                                 findViewById(R.id.progressBar_container).setVisibility(View.GONE);
