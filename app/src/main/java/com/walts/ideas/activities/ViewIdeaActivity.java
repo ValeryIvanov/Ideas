@@ -16,6 +16,8 @@ import com.walts.ideas.R;
 import com.walts.ideas.db.Idea;
 import com.walts.ideas.db.IdeasDbHelper;
 
+import java.util.concurrent.Callable;
+
 public class ViewIdeaActivity extends ActionBarActivity {
 
     private static final String TAG = "ViewIdeaActivity";
@@ -73,6 +75,8 @@ public class ViewIdeaActivity extends ActionBarActivity {
 
         if (idea.latitude > 0 && idea.longitude > 0) {
             findViewById(R.id.location_container).setVisibility(View.VISIBLE);
+
+            findViewById(R.id.removeLocation_button).setVisibility(View.VISIBLE);
 
             TextView latitudeTextView = (TextView) findViewById(R.id.latitude);
             latitudeTextView.setText(String.valueOf(idea.latitude));
@@ -132,4 +136,40 @@ public class ViewIdeaActivity extends ActionBarActivity {
         }
     }
 
+    public void removeLocation(View view) {
+        Dialogs.showConfirmationDialog(this, getString(R.string.remove_location_message), new Callable() {
+            @Override
+            public Object call() throws Exception {
+                idea.latitude = 0;
+                idea.longitude = 0;
+                idea.address = null;
+
+                int rowsAffected = dbHelper.updateIdea(idea);
+
+                if (rowsAffected == 1) {
+                    Intent intent = new Intent(ViewIdeaActivity.this, ViewIdeaActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //finishes view activity
+
+                    Bundle bundle = new Bundle();
+                    bundle.putLong("id", idea.id);
+                    intent.putExtras(bundle);
+
+                    startActivity(intent);
+                    finish();
+
+                    Toast.makeText(ViewIdeaActivity.this, R.string.idea_updated, Toast.LENGTH_SHORT).show();
+                } else {
+                    //ERROR
+                    Intent intent = new Intent(ViewIdeaActivity.this, ListIdeasActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //finishes view activity
+
+                    startActivity(intent);
+                    finish();
+
+                    Toast.makeText(ViewIdeaActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                }
+                return null;
+            }
+        });
+    }
 }

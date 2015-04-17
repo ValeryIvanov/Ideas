@@ -48,7 +48,7 @@
     <string name="password_removed">Password removed</string>
     <string name="password_added">Password added</string>
     <string name="password_required">Password required</string>
-    <string name="remove_password_question">Remove password?</string>
+    <string name="remove_password_message">Remove password?</string>
     <string name="enter_password">Enter password</string>
     <string name="wrong_password">Wrong password!</string>
     <string name="location_null">Could not get location. GPS does not work well inside building. Try to get location with network instead. Change settings?</string>
@@ -58,5 +58,6 @@
     <string name="add_current_location">Add current location</string>
     <string name="remove_location">Remove location</string>
     <string name="address_fetching_failed">Could not fetch locations address, but you can still save location and try to retrive address next time. Or remove location and try again.</string>
+    <string name="remove_location_message">You will not be able to add location to this idea back!</string>
 
 </resources>

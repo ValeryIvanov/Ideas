@@ -69,6 +69,8 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("title", idea.title);
         values.put("desc", idea.desc);
+        values.put("latitude", idea.latitude);
+        values.put("longitude", idea.longitude);
         values.put("address", idea.address);
         return db.update("idea", values, "id  = ?", new String[] {String.valueOf(idea.id)});
     }

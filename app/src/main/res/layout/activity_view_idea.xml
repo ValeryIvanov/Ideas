@@ -120,6 +120,16 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="removeLocation"
+            android:visibility="gone"
+            android:id="@+id/removeLocation_button"
+            android:text="@string/remove_location"
+            android:layout_gravity="bottom"
+            />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="deleteIdea"
             android:text="@string/delete"
             android:layout_gravity="bottom"

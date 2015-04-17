@@ -69,7 +69,7 @@ public class EditIdeaActivity extends ActionBarActivity {
                     return null;
                 }
             };
-            Dialogs.showConfirmationDialog(EditIdeaActivity.this, getResources().getString(R.string.remove_password_question), function);
+            Dialogs.showConfirmationDialog(EditIdeaActivity.this, getResources().getString(R.string.remove_password_message), function);
         }
     };
 
@@ -179,8 +179,12 @@ public class EditIdeaActivity extends ActionBarActivity {
                 Toast.makeText(this, R.string.idea_updated, Toast.LENGTH_SHORT).show();
             } else {
                 //ERROR
-                Intent intent = new Intent(this, ListIdeasActivity.class);
+                Intent intent = new Intent(this, ViewIdeaActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //finishes view activity
+
+                Bundle bundle = new Bundle();
+                bundle.putLong("id", idea.id);
+                intent.putExtras(bundle);
 
                 startActivity(intent);
                 finish();
