@@ -104,10 +104,12 @@
     </LinearLayout>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/desc_textView"
+        android:scrollbars="vertical"
+        android:maxLines="15"
         />
 
     <LinearLayout

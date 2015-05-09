@@ -2,12 +2,17 @@ package com.walts.ideas.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.walts.ideas.SHA1;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class IdeasDbHelper extends SQLiteOpenHelper {
@@ -34,6 +39,7 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
     public static IdeasDbHelper getInstance(Context context) {
         if (dbHelper == null) {
             dbHelper = new IdeasDbHelper(context.getApplicationContext());
+            //dbHelper.createTestIdeas(context);
         }
         return dbHelper;
     }
@@ -45,6 +51,42 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLES);
+    }
+
+    private void createTestIdeas(Context context) {
+        try {
+            AssetManager assetManager = context.getAssets();
+            InputStream inputStream = assetManager.open("lorem-ipsum.txt");
+
+            BufferedReader bufferedReader = null;
+            StringBuilder stringBuilder = new StringBuilder();
+
+            try {
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (bufferedReader != null) {
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            String loremIpsumString = stringBuilder.toString();
+            int numberOfIdeasToCreate = 2;
+            for (int i = 0; i < numberOfIdeasToCreate; i++) {
+                Idea idea = new Idea("Lorem ipsum idea #" + (i + 1), loremIpsumString);
+                insertIdea(idea);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

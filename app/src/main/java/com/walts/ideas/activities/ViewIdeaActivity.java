@@ -3,6 +3,7 @@ package com.walts.ideas.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -69,6 +70,7 @@ public class ViewIdeaActivity extends ActionBarActivity {
 
         TextView descView = (TextView) this.findViewById(R.id.desc_textView);
         descView.setText(idea.desc);
+        descView.setMovementMethod(new ScrollingMovementMethod());
 
         TextView createdDateView = (TextView) this.findViewById(R.id.createdDate_textView);
         createdDateView.setText(idea.createdDate);
