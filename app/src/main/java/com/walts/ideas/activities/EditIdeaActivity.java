@@ -28,7 +28,7 @@ public class EditIdeaActivity extends ActionBarActivity {
 
     private Idea idea;
 
-    private IdeasDbHelper dbHelper = IdeasDbHelper.getInstance(this);
+    private final IdeasDbHelper dbHelper = IdeasDbHelper.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class EditIdeaActivity extends ActionBarActivity {
         }
     }
 
-    private MenuItem.OnMenuItemClickListener removePasswordOnClickListener = new MenuItem.OnMenuItemClickListener() {
+    private final MenuItem.OnMenuItemClickListener removePasswordOnClickListener = new MenuItem.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(final MenuItem item) {
             Callable function = new Callable() {
@@ -75,7 +75,7 @@ public class EditIdeaActivity extends ActionBarActivity {
         }
     };
 
-    private MenuItem.OnMenuItemClickListener passwordProtectOnClickListener = new MenuItem.OnMenuItemClickListener() {
+    private final MenuItem.OnMenuItemClickListener passwordProtectOnClickListener = new MenuItem.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(final MenuItem item) {
 

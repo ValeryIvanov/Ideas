@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.walts.ideas.IdeasAdapter;
-import com.walts.ideas.LocationHelper;
 import com.walts.ideas.R;
 import com.walts.ideas.SHA1;
 import com.walts.ideas.db.Idea;

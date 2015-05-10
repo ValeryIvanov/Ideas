@@ -26,7 +26,7 @@ public class ViewIdeaActivity extends ActionBarActivity {
 
     private Idea idea;
 
-    private IdeasDbHelper dbHelper = IdeasDbHelper.getInstance(this);
+    private final IdeasDbHelper dbHelper = IdeasDbHelper.getInstance(this);
 
     private LocationHelper locationHelper;
 

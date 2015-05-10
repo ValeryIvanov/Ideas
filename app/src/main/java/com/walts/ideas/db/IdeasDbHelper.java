@@ -32,8 +32,8 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
             ")";
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ideas";
 
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "Ideas.db";
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "Ideas.db";
 
     //http://stackoverflow.com/questions/18147354/sqlite-connection-leaked-although-everything-closed
     public static IdeasDbHelper getInstance(Context context) {

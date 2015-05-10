@@ -24,7 +24,7 @@ public class CreateIdeaActivity extends ActionBarActivity {
 
     private static final String TAG = "CreateIdeaActivity";
 
-    private IdeasDbHelper dbHelper = IdeasDbHelper.getInstance(this);
+    private final IdeasDbHelper dbHelper = IdeasDbHelper.getInstance(this);
 
     private Location location = null;
     private String address = null;

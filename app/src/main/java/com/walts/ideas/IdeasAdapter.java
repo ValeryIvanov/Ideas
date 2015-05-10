@@ -20,8 +20,8 @@ public class IdeasAdapter extends ArrayAdapter<Idea> {
 
     private boolean titleSortAsc = true;
     private boolean createdDateSortAsc = true;
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    private Context context;
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private final Context context;
 
     public IdeasAdapter(Context context, int resource, List<Idea> objects) {
         super(context, resource, objects);
@@ -51,14 +51,14 @@ public class IdeasAdapter extends ArrayAdapter<Idea> {
         return itemView;
     }
 
-    private Comparator<Idea> titleComparatorAsc = new Comparator<Idea>() {
+    private final Comparator<Idea> titleComparatorAsc = new Comparator<Idea>() {
         @Override
         public int compare(Idea idea1, Idea idea2) {
             return idea1.title.compareToIgnoreCase(idea2.title);
         }
     };
 
-    private Comparator<Idea> titleComparatorDesc = new Comparator<Idea>() {
+    private final Comparator<Idea> titleComparatorDesc = new Comparator<Idea>() {
         @Override
         public int compare(Idea idea1, Idea idea2) {
             return idea2.title.compareToIgnoreCase(idea1.title);
@@ -75,7 +75,7 @@ public class IdeasAdapter extends ArrayAdapter<Idea> {
         }
     }
 
-    private Comparator<Idea> createdDateComparatorAsc = new Comparator<Idea>() {
+    private final Comparator<Idea> createdDateComparatorAsc = new Comparator<Idea>() {
         @Override
         public int compare(Idea idea1, Idea idea2) {
             try {
@@ -86,7 +86,7 @@ public class IdeasAdapter extends ArrayAdapter<Idea> {
         }
     };
 
-    private Comparator<Idea> createdDateComparatorDesc = new Comparator<Idea>() {
+    private final Comparator<Idea> createdDateComparatorDesc = new Comparator<Idea>() {
         @Override
         public int compare(Idea idea1, Idea idea2) {
             try {

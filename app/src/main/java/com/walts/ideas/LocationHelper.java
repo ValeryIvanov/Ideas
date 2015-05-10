@@ -27,20 +27,20 @@ public class LocationHelper {
 
     private Timer timer;
 
-    private LocationManager locationManager;
+    private final LocationManager locationManager;
     private LocationResult locationResult;
 
     private boolean gpsEnabled = false;
     private boolean networkEnabled = false;
 
-    private Geocoder geocoder;
+    private final Geocoder geocoder;
 
     //buffer address search
     private double lastLatitude;
     private double lastLongitude;
     private String lastAddress;
 
-    private ActionBarActivity activity;
+    private final ActionBarActivity activity;
 
     public LocationHelper(ActionBarActivity activity) {
         locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
@@ -86,7 +86,7 @@ public class LocationHelper {
         locationManager.removeUpdates(locationListenerNetwork);
     }
 
-    private LocationListener locationListenerGps = new LocationListener() {
+    private final LocationListener locationListenerGps = new LocationListener() {
         public void onLocationChanged(Location location) {
             Log.d(TAG, "Location changed in GPS listener. Coordinates are : latitude - " + location.getLatitude() + ", longitude - " + location.getLongitude());
             timer.cancel();
@@ -99,7 +99,7 @@ public class LocationHelper {
         public void onStatusChanged(String provider, int status, Bundle extras) {}
     };
 
-    private LocationListener locationListenerNetwork = new LocationListener() {
+    private final LocationListener locationListenerNetwork = new LocationListener() {
         public void onLocationChanged(Location location) {
             Log.d(TAG, "Location changed in network listener. Coordinates are : latitude - " + location.getLatitude() + ", longitude - " + location.getLongitude());
             timer.cancel();
@@ -183,7 +183,7 @@ public class LocationHelper {
         }
     }
 
-    public static boolean isNetworkAvailable(ActionBarActivity activity) {
+    private boolean isNetworkAvailable(ActionBarActivity activity) {
         ConnectivityManager connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         boolean status = networkInfo != null && networkInfo.isConnected() && networkInfo.isAvailable();
