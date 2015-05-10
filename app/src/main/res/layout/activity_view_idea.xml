@@ -9,163 +9,112 @@
     android:orientation="vertical"
     >
 
-    <RelativeLayout
+    <TextView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/buttons_container"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/title_textView"
+        />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/createdDate_textView"
+        android:layout_below="@id/title_textView"
+        />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/location_container"
+        android:visibility="gone"
+        android:layout_below="@+id/createdDate_textView"
         >
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/title_textView"
-            />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/createdDate_textView"
-            android:layout_below="@id/title_textView"
-            />
-
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/location_container"
-            android:visibility="gone"
-            android:layout_below="@+id/createdDate_textView"
-            >
+            android:orientation="horizontal" >
 
-            <LinearLayout
-                android:layout_width="fill_parent"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/latitude"
+                />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/latitude"
-                    />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="3"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/latitude"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/longitude"
-                    />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="3"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/longitude"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                android:id="@+id/address_container"
-                >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/address"
-                    />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="3"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/address"
-                    />
-            </LinearLayout>
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/latitude"
+                />
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/desc_textView"
-            android:scrollbars="vertical"
-            android:layout_below="@+id/location_container"
-            />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/buttons_container"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        >
-
-        <Button
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:onClick="removeLocation"
-            android:visibility="gone"
-            android:id="@+id/removeLocation_button"
-            android:text="@string/remove_location"
-            />
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/longitude"
+                />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/longitude"
+                />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@id/removeLocation_button"
+            android:visibility="gone"
+            android:id="@+id/address_container"
             >
 
-            <Button
+            <TextView
                 android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="deleteIdea"
-                android:text="@string/delete"
-                android:id="@+id/deleteIdea_button"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/address"
                 />
 
-            <Button
+            <TextView
                 android:layout_width="0dp"
+                android:layout_weight="3"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="editIdea"
-                android:id="@+id/editIdea_button"
-                android:text="@string/edit"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/address"
                 />
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/desc_textView"
+        android:scrollbars="vertical"
+        android:layout_below="@+id/location_container"
+        />
 
 </RelativeLayout>

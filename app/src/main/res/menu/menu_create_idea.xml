@@ -4,6 +4,13 @@
     tools:context="com.walts.ideas.activities.CreateIdeaActivity">
 
     <item
+        android:id="@+id/action_save_new_idea"
+        android:onClick="createIdea"
+        android:icon="@drawable/ic_action_accept"
+        android:title="@string/action_save_new_idea"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         app:showAsAction="never" />

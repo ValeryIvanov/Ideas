@@ -9,14 +9,6 @@
     android:orientation="vertical"
     >
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/create_new_idea"
-        android:gravity="center"
-        />
-
     <EditText
         android:id="@+id/title_editBox"
         android:layout_width="match_parent"
@@ -138,12 +130,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="createIdea"
-        android:text="@string/create"
-        />
 
 </LinearLayout>

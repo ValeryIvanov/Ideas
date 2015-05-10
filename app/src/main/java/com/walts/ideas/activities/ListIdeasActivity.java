@@ -93,6 +93,7 @@ public class ListIdeasActivity extends ActionBarActivity {
                     public void onClick(View view) {
                         String password = editText.getText().toString();
                         if (SHA1.sha1Hash(password).equals(idea.password)) {
+                            alertDialog.dismiss();
                             viewIdea(idea);
                         } else {
                             editText.setError(getString(R.string.wrong_password));
@@ -120,10 +121,10 @@ public class ListIdeasActivity extends ActionBarActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 return true;
-            case R.id.sort_by_title:
+            case R.id.action_sort_by_title:
                 arrayAdapter.sortByTitle();
                 return true;
-            case R.id.sort_by_created_date:
+            case R.id.action_sort_by_created_date:
                 arrayAdapter.sortByCreatedDate();
                 return true;
             default:
@@ -137,7 +138,7 @@ public class ListIdeasActivity extends ActionBarActivity {
         listView.setAdapter(arrayAdapter);
     }
 
-    public void createNewIdea(View view) {
+    public void createNewIdea(MenuItem item) {
         Intent intent = new Intent(this, CreateIdeaActivity.class);
         startActivity(intent);
         finish();

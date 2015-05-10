@@ -1,22 +1,38 @@
 <resources>
     <string name="app_name">Ideas</string>
 
+    <!--Actions-->
     <string name="action_settings">Settings</string>
-    <string name="action_search">Search</string>
+    <string name="action_search_idea">Search</string>
+    <string name="action_create_new_idea">Create new idea</string>
+    <string name="action_edit_idea">Edit idea</string>
+    <string name="action_delete_idea">Delete idea</string>
+    <string name="action_password_protect_idea">Password protect idea</string>
+    <string name="action_save_idea">Save idea</string>
+    <string name="action_remove_location">Remove location</string>
+    <string name="action_save_new_idea">Save new idea</string>
 
+    <string name="remove_location">Remove location</string>
 
-    <string name="create_new_idea">Create new idea</string>
-    <string name="something_went_wrong">Something went wrong</string>
+    <!--Buttons-->
+    <string name="create">Create</string>
+    <string name="password_protect">Password protect</string>
+    <string name="remove_password">Remove password</string>
 
     <!--Titles-->
     <string name="title_activity_list_ideas">Ideas</string>
     <string name="title_activity_create_idea">Create Idea</string>
     <string name="title_activity_edit_idea">Edit idea</string>
+    <string name="title_activity_view_idea">View idea</string>
 
     <!--Notifications-->
+    <string name="something_went_wrong">Something went wrong</string>
     <string name="idea_created">Idea created</string>
     <string name="idea_updated">Idea updated</string>
     <string name="idea_deleted">Idea deleted</string>
+    <string name="password_added">Password added</string>
+    <string name="password_removed">Password removed</string>
+    <string name="address_fetching_failed">Could not fetch locations address, but you can still save location and try to retrieve address next time. Or remove location and try again.</string>
 
     <!--Confirmation dialog-->
     <string name="are_you_sure">Are you sure?</string>
@@ -25,39 +41,24 @@
     <!--Attributes-->
     <string name="title">Title</string>
     <string name="description">Description</string>
-
-    <!--Actions-->
-    <string name="create">Create</string>
-    <string name="save">Save</string>
-    <string name="delete">Delete</string>
-    <string name="edit">Edit</string>
-    <string name="edit_idea">Edit idea</string>
-    <string name="title_activity_view_idea">View idea</string>
+    <string name="address">Address</string>
+    <string name="longitude">Longitude</string>
+    <string name="latitude">Latitude</string>
 
     <!--Errors-->
     <string name="title_required">Title is required!</string>
     <string name="desc_required">Description is required!</string>
 
-    <string name="created_date">Created date</string>
     <string name="action_sort_by_title">Sort by title</string>
     <string name="action_sort_by_created_date">Sort by created date</string>
 
-    <string name="password_protect">Password protect</string>
     <string name="password_protect_desc">Edit idea\'s title, so that others could not understand what You meant under it! Only title will be visible in list view. Remember this password or You will not get access to this idea any more!</string>
-    <string name="remove_password">Remove password</string>
-    <string name="password_removed">Password removed</string>
-    <string name="password_added">Password added</string>
     <string name="password_required">Password required</string>
     <string name="remove_password_message">Remove password?</string>
     <string name="enter_password">Enter password</string>
     <string name="wrong_password">Wrong password!</string>
     <string name="location_null">Could not get location. GPS does not work well inside building. Try to get location with network instead. Change settings?</string>
-    <string name="address">Address</string>
-    <string name="longitude">Longitude</string>
-    <string name="latitude">Latitude</string>
     <string name="add_current_location">Add current location</string>
-    <string name="remove_location">Remove location</string>
-    <string name="address_fetching_failed">Could not fetch locations address, but you can still save location and try to retrive address next time. Or remove location and try again.</string>
     <string name="remove_location_message">You will not be able to add location to this idea back!</string>
 
 </resources>

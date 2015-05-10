@@ -4,19 +4,27 @@
     tools:context="com.walts.ideas.activities.ListIdeasActivity">
 
     <item
+        android:id="@+id/action_create_new_idea"
+        android:title="@string/action_create_new_idea"
+        android:icon="@drawable/ic_action_new"
+        android:onClick="createNewIdea"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         app:showAsAction="never"
         />
 
     <item
-        android:id="@+id/sort_by_title"
+        android:id="@+id/action_sort_by_title"
         android:title="@string/action_sort_by_title"
         app:showAsAction="never"
         />
 
     <item
-        android:id="@+id/sort_by_created_date"
+        android:id="@+id/action_sort_by_created_date"
         android:title="@string/action_sort_by_created_date"
         app:showAsAction="never"
         />

@@ -7,6 +7,7 @@ import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -50,44 +51,6 @@ public class CreateIdeaActivity extends ActionBarActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_create_idea, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-
-    public void createIdea(View view) {
-        TextView titleView = (TextView) this.findViewById(R.id.title_editBox);
-        String title = titleView.getText().toString().trim();
-
-        TextView descView = (TextView) this.findViewById(R.id.desc_editBox);
-        String desc = descView.getText().toString().trim();
-
-        if (title.equals("")) {
-            titleView.setError(getString(R.string.title_required));
-        } else if (desc.equals("")) {
-            descView.setError(getString(R.string.desc_required));
-        } else {
-            Idea idea = new Idea(title, desc);
-
-            if (location != null) {
-                idea.latitude = location.getLatitude();
-                idea.longitude = location.getLongitude();
-            }
-
-            if (address != null) {
-                idea.address = address;
-            }
-
-            long id = dbHelper.insertIdea(idea);
-            if (id == -1) {
-                //ERROR
-                Intent intent = new Intent(this, ListIdeasActivity.class);
-
-                startActivity(intent);
-                finish();
-
-                Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
-            } else {
-                viewIdea(id);
-            }
-        }
     }
 
     private void viewIdea(long id) {
@@ -175,5 +138,43 @@ public class CreateIdeaActivity extends ActionBarActivity {
             findViewById(R.id.progressBar_container).setVisibility(View.VISIBLE);
         }
 
+    }
+
+    public void createIdea(MenuItem item) {
+        TextView titleView = (TextView) this.findViewById(R.id.title_editBox);
+        String title = titleView.getText().toString().trim();
+
+        TextView descView = (TextView) this.findViewById(R.id.desc_editBox);
+        String desc = descView.getText().toString().trim();
+
+        if (title.equals("")) {
+            titleView.setError(getString(R.string.title_required));
+        } else if (desc.equals("")) {
+            descView.setError(getString(R.string.desc_required));
+        } else {
+            Idea idea = new Idea(title, desc);
+
+            if (location != null) {
+                idea.latitude = location.getLatitude();
+                idea.longitude = location.getLongitude();
+            }
+
+            if (address != null) {
+                idea.address = address;
+            }
+
+            long id = dbHelper.insertIdea(idea);
+            if (id == -1) {
+                //ERROR
+                Intent intent = new Intent(this, ListIdeasActivity.class);
+
+                startActivity(intent);
+                finish();
+
+                Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+            } else {
+                viewIdea(id);
+            }
+        }
     }
 }

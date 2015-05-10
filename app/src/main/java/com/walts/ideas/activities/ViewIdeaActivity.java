@@ -7,6 +7,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,8 +79,6 @@ public class ViewIdeaActivity extends ActionBarActivity {
         if (idea.latitude > 0 && idea.longitude > 0) {
             findViewById(R.id.location_container).setVisibility(View.VISIBLE);
 
-            findViewById(R.id.removeLocation_button).setVisibility(View.VISIBLE);
-
             TextView latitudeTextView = (TextView) findViewById(R.id.latitude);
             latitudeTextView.setText(String.valueOf(idea.latitude));
 
@@ -111,14 +110,15 @@ public class ViewIdeaActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_view_idea, menu);
+
+        if (idea != null && idea.latitude > 0 && idea.longitude > 0) {
+            menu.findItem(R.id.action_remove_location).setVisible(true);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void deleteIdea(View view) {
-        Dialogs.showDeleteDialog(this, idea);
-    }
-
-    public void editIdea(View view) {
+    public void editIdea(MenuItem item) {
         if (idea != null) {
             Intent intent = new Intent(ViewIdeaActivity.this, EditIdeaActivity.class);
 
@@ -138,7 +138,11 @@ public class ViewIdeaActivity extends ActionBarActivity {
         }
     }
 
-    public void removeLocation(View view) {
+    public void deleteIdea(MenuItem item) {
+        Dialogs.showDeleteDialog(this, idea);
+    }
+
+    public void removeLocation(MenuItem item) {
         Dialogs.showConfirmationDialog(this, getString(R.string.remove_location_message), new Callable() {
             @Override
             public Object call() throws Exception {
