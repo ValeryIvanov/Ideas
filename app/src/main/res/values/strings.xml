@@ -11,13 +11,11 @@
     <string name="action_save_idea">Save idea</string>
     <string name="action_remove_location">Remove location</string>
     <string name="action_save_new_idea">Save new idea</string>
-
-    <string name="remove_location">Remove location</string>
-
-    <!--Buttons-->
-    <string name="create">Create</string>
-    <string name="password_protect">Password protect</string>
-    <string name="remove_password">Remove password</string>
+    <string name="action_add_current_location">Add current location</string>
+    <string name="action_sort_by_title">Sort by title</string>
+    <string name="action_sort_by_created_date">Sort by created date</string>
+    <string name="action_password_protect">Password protect</string>
+    <string name="action_remove_password">Remove password</string>
 
     <!--Titles-->
     <string name="title_activity_list_ideas">Ideas</string>
@@ -48,9 +46,6 @@
     <!--Errors-->
     <string name="title_required">Title is required!</string>
     <string name="desc_required">Description is required!</string>
-
-    <string name="action_sort_by_title">Sort by title</string>
-    <string name="action_sort_by_created_date">Sort by created date</string>
 
     <string name="password_protect_desc">Edit idea\'s title, so that others could not understand what You meant under it! Only title will be visible in list view. Remember this password or You will not get access to this idea any more!</string>
     <string name="password_required">Password required</string>

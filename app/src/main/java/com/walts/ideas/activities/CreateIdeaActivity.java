@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +36,19 @@ public class CreateIdeaActivity extends ActionBarActivity {
         setContentView(R.layout.activity_create_idea);
 
         locationHelper = new LocationHelper(this);
+
+        if (savedInstanceState != null) {
+            location = savedInstanceState.getParcelable("location");
+            address = savedInstanceState.getString("address");
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable("location", location);
+        outState.putString("address", address);
     }
 
     @Override
@@ -50,6 +62,8 @@ public class CreateIdeaActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_create_idea, menu);
+
+        populateLocationView(menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -64,80 +78,6 @@ public class CreateIdeaActivity extends ActionBarActivity {
         finish();
 
         Toast.makeText(this, R.string.idea_created, Toast.LENGTH_SHORT).show();
-    }
-
-    public void addOrRemoveLocation(final View view) {
-        final Button button = (Button) findViewById(R.id.addOrRemoveLocation_button);
-        if (location == null) {
-
-            button.setEnabled(false);
-
-            final ProgressBar progressBar = (android.widget.ProgressBar) findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.VISIBLE);
-
-            LocationHelper.LocationResult locationResult = new LocationHelper.LocationResult() {
-                @Override
-                public void gotLocation(final Location location){
-                    CreateIdeaActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (location != null) {
-                                CreateIdeaActivity.this.location = location;
-                                String address = locationHelper.getAddress(location.getLatitude(), location.getLongitude());
-                                CreateIdeaActivity.this.address = address;
-
-                                progressBar.setVisibility(View.GONE);
-                                findViewById(R.id.progressBar_container).setVisibility(View.GONE);
-
-                                TextView latitudeTextView = (TextView) findViewById(R.id.latitude);
-                                latitudeTextView.setText(String.valueOf(location.getLatitude()));
-
-                                TextView longitudeTextView = (TextView) findViewById(R.id.longitude);
-                                longitudeTextView.setText(String.valueOf(location.getLongitude()));
-
-                                findViewById(R.id.location_container).setVisibility(View.VISIBLE);
-
-                                button.setText(getString(R.string.remove_location));
-                                button.setEnabled(true);
-
-                                if (address != null) {
-                                    TextView addressTextView = (TextView) findViewById(R.id.address);
-                                    addressTextView.setText(address);
-                                } else {
-                                    Toast.makeText(CreateIdeaActivity.this, R.string.address_fetching_failed, Toast.LENGTH_SHORT).show();
-                                }
-                            } else {
-                                Dialogs.showAlertMessage(CreateIdeaActivity.this, new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), getString(R.string.location_null));
-                            }
-                        }
-                    });
-                }
-            };
-            boolean requestSuccessful = locationHelper.requestLocation(locationResult);
-            if (!requestSuccessful) {
-                progressBar.setVisibility(View.GONE);
-                button.setEnabled(true);
-            }
-        } else {
-            location = null;
-            address = null;
-
-            TextView latitudeTextView = (TextView) findViewById(R.id.latitude);
-            latitudeTextView.setText("");
-
-            TextView longitudeTextView = (TextView) findViewById(R.id.longitude);
-            longitudeTextView.setText("");
-
-            TextView addressTextView = (TextView) findViewById(R.id.address);
-            addressTextView.setText("");
-
-            button.setText(R.string.add_current_location);
-
-            findViewById(R.id.location_container).setVisibility(View.GONE);
-
-            findViewById(R.id.progressBar_container).setVisibility(View.VISIBLE);
-        }
-
     }
 
     public void createIdea(MenuItem item) {
@@ -158,7 +98,6 @@ public class CreateIdeaActivity extends ActionBarActivity {
                 idea.latitude = location.getLatitude();
                 idea.longitude = location.getLongitude();
             }
-
             if (address != null) {
                 idea.address = address;
             }
@@ -175,6 +114,98 @@ public class CreateIdeaActivity extends ActionBarActivity {
             } else {
                 viewIdea(id);
             }
+        }
+    }
+
+    public void addOrRemoveLocation(final MenuItem item) {
+        if (location == null) {
+            item.setEnabled(false);
+
+            final ProgressBar progressBar = (android.widget.ProgressBar) findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.VISIBLE);
+
+            LocationHelper.LocationResult locationResult = new LocationHelper.LocationResult() {
+                @Override
+                public void gotLocation(final Location location){
+                    CreateIdeaActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (location != null) {
+                                CreateIdeaActivity.this.location = location;
+                                String address = locationHelper.getAddress(location.getLatitude(), location.getLongitude());
+                                CreateIdeaActivity.this.address = address;
+
+                                progressBar.setVisibility(View.GONE);
+
+                                TextView latitudeTextView = (TextView) findViewById(R.id.latitude);
+                                latitudeTextView.setText(String.valueOf(location.getLatitude()));
+
+                                TextView longitudeTextView = (TextView) findViewById(R.id.longitude);
+                                longitudeTextView.setText(String.valueOf(location.getLongitude()));
+
+                                findViewById(R.id.location_container).setVisibility(View.VISIBLE);
+
+                                item.setTitle(getString(R.string.action_remove_location));
+                                item.setIcon(R.drawable.ic_action_location_off);
+                                item.setEnabled(true);
+
+                                if (address != null) {
+                                    TextView addressTextView = (TextView) findViewById(R.id.address);
+                                    addressTextView.setText(address);
+                                } else {
+                                    Toast.makeText(CreateIdeaActivity.this, R.string.address_fetching_failed, Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Dialogs.showAlertMessage(CreateIdeaActivity.this, new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), getString(R.string.location_null));
+                            }
+                        }
+                    });
+                }
+            };
+            boolean requestSuccessful = locationHelper.requestLocation(locationResult);
+            if (!requestSuccessful) {
+                progressBar.setVisibility(View.GONE);
+                item.setEnabled(true);
+            }
+        } else {
+            location = null;
+            address = null;
+
+            TextView latitudeTextView = (TextView) findViewById(R.id.latitude);
+            latitudeTextView.setText("");
+
+            TextView longitudeTextView = (TextView) findViewById(R.id.longitude);
+            longitudeTextView.setText("");
+
+            TextView addressTextView = (TextView) findViewById(R.id.address);
+            addressTextView.setText("");
+
+            item.setTitle(R.string.add_current_location);
+            item.setIcon(R.drawable.ic_action_place);
+
+            findViewById(R.id.location_container).setVisibility(View.GONE);
+        }
+    }
+
+    private void populateLocationView(Menu menu) {
+        if (location != null) {
+            TextView latitudeTextView = (TextView) findViewById(R.id.latitude);
+            latitudeTextView.setText(String.valueOf(location.getLatitude()));
+
+            TextView longitudeTextView = (TextView) findViewById(R.id.longitude);
+            longitudeTextView.setText(String.valueOf(location.getLongitude()));
+
+            findViewById(R.id.location_container).setVisibility(View.VISIBLE);
+
+            MenuItem locationItem = menu.findItem(R.id.action_add_current_location);
+
+            locationItem.setTitle(getString(R.string.action_remove_location));
+            locationItem.setIcon(R.drawable.ic_action_location_off);
+            locationItem.setEnabled(true);
+        }
+        if (address != null) {
+            TextView addressTextView = (TextView) findViewById(R.id.address);
+            addressTextView.setText(address);
         }
     }
 }

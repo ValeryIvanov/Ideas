@@ -60,7 +60,7 @@ public class EditIdeaActivity extends ActionBarActivity {
                 public Object call() throws Exception {
                     int rowsAffected = dbHelper.removePassword(idea);
                     if (rowsAffected == 1) {
-                        item.setTitle(R.string.password_protect);
+                        item.setTitle(R.string.action_password_protect);
                         item.setIcon(R.drawable.ic_action_secure);
                         item.setOnMenuItemClickListener(passwordProtectOnClickListener);
                         Toast.makeText(EditIdeaActivity.this, getString(R.string.password_removed), Toast.LENGTH_SHORT).show();
@@ -84,10 +84,10 @@ public class EditIdeaActivity extends ActionBarActivity {
 
             final AlertDialog alertDialog = new AlertDialog.Builder(EditIdeaActivity.this)
                     .setView(editText)
-                    .setTitle(R.string.password_protect)
+                    .setTitle(R.string.action_password_protect)
                     .setMessage(R.string.password_protect_desc)
                     .setIcon(android.R.drawable.ic_lock_idle_lock)
-                    .setPositiveButton(R.string.password_protect, null)
+                    .setPositiveButton(R.string.action_password_protect, null)
                     .setNegativeButton(android.R.string.cancel, null)
                     .create();
 
@@ -108,7 +108,7 @@ public class EditIdeaActivity extends ActionBarActivity {
                                 int rowsAffected = dbHelper.addPassword(idea);
 
                                 if (rowsAffected == 1) {
-                                    item.setTitle(getString(R.string.remove_password));
+                                    item.setTitle(getString(R.string.action_remove_password));
                                     item.setIcon(R.drawable.ic_action_not_secure);
                                     item.setOnMenuItemClickListener(removePasswordOnClickListener);
 
@@ -136,17 +136,16 @@ public class EditIdeaActivity extends ActionBarActivity {
 
         MenuItem passwordMenuItem = menu.findItem(R.id.action_password_protect_idea);
         if (idea.password != null && idea.password.length() > 0) {
-            passwordMenuItem.setTitle(getString(R.string.remove_password));
+            passwordMenuItem.setTitle(getString(R.string.action_remove_password));
             passwordMenuItem.setIcon(R.drawable.ic_action_not_secure);
             passwordMenuItem.setOnMenuItemClickListener(removePasswordOnClickListener);
         } else {
-            passwordMenuItem.setTitle(R.string.password_protect);
+            passwordMenuItem.setTitle(R.string.action_password_protect);
             passwordMenuItem.setIcon(R.drawable.ic_action_secure);
             passwordMenuItem.setOnMenuItemClickListener(passwordProtectOnClickListener);
         }
         return super.onCreateOptionsMenu(menu);
     }
-
 
     private void populateView() {
         TextView titleView = (TextView) this.findViewById(R.id.title_editBox);

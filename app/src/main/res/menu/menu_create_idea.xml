@@ -4,6 +4,13 @@
     tools:context="com.walts.ideas.activities.CreateIdeaActivity">
 
     <item
+        android:id="@+id/action_add_current_location"
+        android:onClick="addOrRemoveLocation"
+        android:icon="@drawable/ic_action_place"
+        android:title="@string/action_add_current_location"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_save_new_idea"
         android:onClick="createIdea"
         android:icon="@drawable/ic_action_accept"
