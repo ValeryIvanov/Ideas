@@ -9,12 +9,13 @@
     android:orientation="vertical"
     >
 
-    <ProgressBar
-        android:visibility="gone"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/searchBar"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:layout_gravity="center_horizontal" />
+        android:inputType="text"
+        android:hint="@string/search"
+        />
 
     <ListView
         android:layout_width="fill_parent"

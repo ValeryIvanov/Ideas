@@ -5,7 +5,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.walts.ideas.db.Idea;
@@ -13,10 +12,11 @@ import com.walts.ideas.db.Idea;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class IdeasAdapter extends ArrayAdapter<Idea> {
+public class IdeasAdapter extends CustomArrayAdapter<Idea> {
 
     private boolean titleSortAsc = true;
     private boolean createdDateSortAsc = true;
@@ -26,6 +26,19 @@ public class IdeasAdapter extends ArrayAdapter<Idea> {
     public IdeasAdapter(Context context, int resource, List<Idea> objects) {
         super(context, resource, objects);
         this.context = context;
+        CustomFilter<Idea> customFilter = new CustomFilter<Idea>() {
+            @Override
+            public List<Idea> filter(ArrayList<Idea> values, CharSequence constraint) throws Exception {
+                ArrayList<Idea> ideas = new ArrayList<>();
+                for (Idea idea : values) {
+                    if (idea.desc.contains(constraint) || idea.title.contains(constraint)) {
+                        ideas.add(idea);
+                    }
+                }
+                return ideas;
+            }
+        };
+        setCustomFilter(customFilter);
     }
 
     @Override

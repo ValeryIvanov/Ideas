@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,6 +44,23 @@ public class ListIdeasActivity extends ActionBarActivity {
         populateIdeas();
         populateListView();
         registerClickCallback();
+        registerSearchBar();
+    }
+
+    private void registerSearchBar() {
+        EditText searchBar = (EditText) findViewById(R.id.searchBar);
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                arrayAdapter.getFilter().filter(s.toString());
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     private void populateIdeas() {
