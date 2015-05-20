@@ -33,16 +33,11 @@ public class ViewIdeaActivity extends ActionBarActivity {
 
     private LocationHelper locationHelper;
 
-    @InjectView(R.id.toolbar)
-    Toolbar toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_idea);
         ButterKnife.inject(this);
-
-        setSupportActionBar(toolbar);
 
         locationHelper = new LocationHelper(this);
 

@@ -42,7 +42,6 @@ public class IdeasListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -58,9 +57,16 @@ public class IdeasListFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_list_ideas, menu);
         super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.menu_list_ideas, menu);
     }
 
     @Override
@@ -156,7 +162,5 @@ public class IdeasListFragment extends Fragment {
         arrayAdapter = new IdeasAdapter(getActivity(), R.layout.idea, ideas);
         listView.setAdapter(arrayAdapter);
     }
-
-
 
 }
