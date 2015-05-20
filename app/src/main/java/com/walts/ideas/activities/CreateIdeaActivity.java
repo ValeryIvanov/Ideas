@@ -53,7 +53,7 @@ public class CreateIdeaActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, ListIdeasActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
@@ -105,7 +105,7 @@ public class CreateIdeaActivity extends ActionBarActivity {
             long id = dbHelper.insertIdea(idea);
             if (id == -1) {
                 //ERROR
-                Intent intent = new Intent(this, ListIdeasActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
 
                 startActivity(intent);
                 finish();

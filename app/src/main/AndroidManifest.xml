@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name=".activities.ListIdeasActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/title_activity_list_ideas" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

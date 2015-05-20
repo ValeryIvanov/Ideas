@@ -41,7 +41,7 @@ public class EditIdeaActivity extends ActionBarActivity {
 
         if (idea == null) {
             //ERROR
-            Intent intent = new Intent(this, ListIdeasActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
 
             startActivity(intent);
             finish();

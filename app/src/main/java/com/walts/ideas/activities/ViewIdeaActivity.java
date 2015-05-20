@@ -3,8 +3,8 @@ package com.walts.ideas.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +20,9 @@ import com.walts.ideas.db.IdeasDbHelper;
 
 import java.util.concurrent.Callable;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class ViewIdeaActivity extends ActionBarActivity {
 
     private static final String TAG = "ViewIdeaActivity";
@@ -30,10 +33,16 @@ public class ViewIdeaActivity extends ActionBarActivity {
 
     private LocationHelper locationHelper;
 
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_idea);
+        ButterKnife.inject(this);
+
+        setSupportActionBar(toolbar);
 
         locationHelper = new LocationHelper(this);
 
@@ -47,7 +56,7 @@ public class ViewIdeaActivity extends ActionBarActivity {
 
         if (idea == null) {
             //ERROR
-            Intent intent = new Intent(this, ListIdeasActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
 
             startActivity(intent);
             finish();
@@ -60,7 +69,7 @@ public class ViewIdeaActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(ViewIdeaActivity.this, ListIdeasActivity.class);
+        Intent intent = new Intent(ViewIdeaActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
@@ -129,7 +138,7 @@ public class ViewIdeaActivity extends ActionBarActivity {
             startActivity(intent);
         } else {
             //ERROR
-            Intent intent = new Intent(this, ListIdeasActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
 
             startActivity(intent);
             finish();
@@ -166,7 +175,7 @@ public class ViewIdeaActivity extends ActionBarActivity {
                     Toast.makeText(ViewIdeaActivity.this, R.string.idea_updated, Toast.LENGTH_SHORT).show();
                 } else {
                     //ERROR
-                    Intent intent = new Intent(ViewIdeaActivity.this, ListIdeasActivity.class);
+                    Intent intent = new Intent(ViewIdeaActivity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //finishes view activity
 
                     startActivity(intent);

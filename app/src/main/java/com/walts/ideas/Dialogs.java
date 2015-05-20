@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 
-import com.walts.ideas.activities.ListIdeasActivity;
+import com.walts.ideas.activities.MainActivity;
 import com.walts.ideas.db.Idea;
 import com.walts.ideas.db.IdeasDbHelper;
 
@@ -17,7 +17,7 @@ public class Dialogs {
     private static void deleteIdea(final ActionBarActivity activity, final Idea idea) {
         int rowsAffected = IdeasDbHelper.getInstance(activity).deleteIdea(idea.id);
         if (rowsAffected == 1) {
-            Intent intent = new Intent(activity, ListIdeasActivity.class);
+            Intent intent = new Intent(activity, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 
             activity.startActivity(intent);
@@ -25,7 +25,7 @@ public class Dialogs {
 
             Toast.makeText(activity, R.string.idea_deleted, Toast.LENGTH_SHORT).show();
         } else {
-            Intent intent = new Intent(activity, ListIdeasActivity.class);
+            Intent intent = new Intent(activity, MainActivity.class);
 
             activity.startActivity(intent);
             activity.finish();

@@ -4,12 +4,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,36 +28,70 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
-public class ListIdeasActivity extends ActionBarActivity {
-
-    private static final String TAG = "ListIdeasActivity";
+public class IdeasListFragment extends Fragment {
 
     private List<Idea> ideas = new ArrayList<>();
     private IdeasAdapter arrayAdapter;
-    private ListView listView;
+
+    @InjectView(R.id.listView)
+    ListView listView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_ideas);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.ideas_list_fragment, container, false);
+        ButterKnife.inject(this, rootView);
 
         populateIdeas();
         populateListView();
         registerClickCallback();
-    }
 
-    private void populateIdeas() {
-        IdeasDbHelper dbHelper = IdeasDbHelper.getInstance(this);
-        ideas = dbHelper.getAllIdeas();
-        Collections.reverse(ideas); //show newest first
+        return rootView;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_list_ideas, menu);
-        return super.onCreateOptionsMenu(menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_sort_by_title:
+                arrayAdapter.sortByTitle();
+                return true;
+            case R.id.action_sort_by_created_date:
+                arrayAdapter.sortByCreatedDate();
+                return true;
+            case R.id.action_create_new_idea:
+                createNewIdea();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void createNewIdea() {
+        Intent intent = new Intent(getActivity(), CreateIdeaActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
+    private void populateIdeas() {
+        IdeasDbHelper dbHelper = IdeasDbHelper.getInstance(getActivity());
+        ideas = dbHelper.getAllIdeas();
+        Collections.reverse(ideas); //show newest first
     }
 
     private void registerClickCallback() {
@@ -72,10 +109,10 @@ public class ListIdeasActivity extends ActionBarActivity {
     }
 
     private void showPasswordDialog(final Idea idea) {
-        final EditText editText = new EditText(ListIdeasActivity.this);
+        final EditText editText = new EditText(getActivity());
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
-        final AlertDialog alertDialog = new AlertDialog.Builder(ListIdeasActivity.this)
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
                 .setView(editText)
                 .setTitle(R.string.enter_password)
                 .setIcon(android.R.drawable.ic_lock_idle_lock)
@@ -105,42 +142,21 @@ public class ListIdeasActivity extends ActionBarActivity {
     }
 
     private void viewIdea(Idea idea) {
-        Intent intent = new Intent(ListIdeasActivity.this, ViewIdeaActivity.class);
+        Intent intent = new Intent(getActivity(), ViewIdeaActivity.class);
 
         Bundle bundle = new Bundle();
         bundle.putLong("id", idea.id);
         intent.putExtras(bundle);
 
         startActivity(intent);
-        finish();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-            case R.id.action_sort_by_title:
-                arrayAdapter.sortByTitle();
-                return true;
-            case R.id.action_sort_by_created_date:
-                arrayAdapter.sortByCreatedDate();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        getActivity().finish();
     }
 
     private void populateListView() {
-        listView = (ListView) findViewById(R.id.listView);
-        arrayAdapter = new IdeasAdapter(this, R.layout.idea, ideas);
+        arrayAdapter = new IdeasAdapter(getActivity(), R.layout.idea, ideas);
         listView.setAdapter(arrayAdapter);
     }
 
-    public void createNewIdea(MenuItem item) {
-        Intent intent = new Intent(this, CreateIdeaActivity.class);
-        startActivity(intent);
-        finish();
-    }
+
 
 }
