@@ -5,10 +5,13 @@ import android.location.Location;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -39,8 +42,8 @@ public class CreateIdeaActivity extends ActionBarActivity {
     @InjectView(R.id.address) TextView addressTextView;
     @InjectView(R.id.location_container) LinearLayout locationContainer;
     @InjectView(R.id.progress_bar) ProgressBar progressBar;
-    @InjectView(R.id.title) TextView titleTextView;
-    @InjectView(R.id.desc) TextView descTextView;
+    @InjectView(R.id.title) EditText titleTextView;
+    @InjectView(R.id.desc) EditText descTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,31 @@ public class CreateIdeaActivity extends ActionBarActivity {
             location = savedInstanceState.getParcelable("location");
             address = savedInstanceState.getString("address");
         }
+
+        registerListeners();
+    }
+
+    private void registerListeners() {
+        titleTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                titleTextView.setError(null);
+            }
+        });
+        descTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                descTextView.setError(null);
+            }
+        });
     }
 
     @Override
