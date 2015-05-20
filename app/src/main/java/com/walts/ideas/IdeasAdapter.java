@@ -16,6 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class IdeasAdapter extends ArrayAdapter<Idea> {
 
     private boolean titleSortAsc = true;
@@ -31,24 +34,37 @@ public class IdeasAdapter extends ArrayAdapter<Idea> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = ((Activity) context).getLayoutInflater();
-        View itemView = convertView;
-        if (itemView == null) {
-            itemView = layoutInflater.inflate(R.layout.idea, parent, false);
+
+        ViewHolder holder;
+
+        if (convertView != null) {
+            holder = (ViewHolder) convertView.getTag();
+        } else {
+            convertView = layoutInflater.inflate(R.layout.idea, parent, false);
+            holder = new ViewHolder(convertView);
+            convertView.setTag(holder);
         }
         Idea idea = getItem(position);
 
-        TextView titleView = (TextView) itemView.findViewById(R.id.title);
-        titleView.setText(idea.title);
+        holder.title.setText(idea.title);
 
         if (idea.password == null || idea.password.length() == 0) { //show idea's desc only if it is not password protected
-            TextView descView = (TextView) itemView.findViewById(R.id.desc);
-            descView.setText(idea.desc);
+            holder.desc.setText(idea.desc);
         }
 
-        TextView createdDateView = (TextView) itemView.findViewById(R.id.createdDate);
-        createdDateView.setText(idea.createdDate);
+        holder.createdDate.setText(idea.createdDate);
 
-        return itemView;
+        return convertView;
+    }
+
+    static class ViewHolder {
+        @InjectView(R.id.title) TextView title;
+        @InjectView(R.id.desc) TextView desc;
+        @InjectView(R.id.createdDate) TextView createdDate;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 
     private final Comparator<Idea> titleComparatorAsc = new Comparator<Idea>() {

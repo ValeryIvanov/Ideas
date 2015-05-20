@@ -39,7 +39,7 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
     public static IdeasDbHelper getInstance(Context context) {
         if (dbHelper == null) {
             dbHelper = new IdeasDbHelper(context.getApplicationContext());
-            //dbHelper.createTestIdeas(context);
+            dbHelper.createTestIdeas(context);
         }
         return dbHelper;
     }
@@ -79,7 +79,7 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
                 }
             }
             String loremIpsumString = stringBuilder.toString();
-            int numberOfIdeasToCreate = 2;
+            int numberOfIdeasToCreate = 20;
             for (int i = 0; i < numberOfIdeasToCreate; i++) {
                 Idea idea = new Idea("Lorem ipsum idea #" + (i + 1), loremIpsumString);
                 insertIdea(idea);

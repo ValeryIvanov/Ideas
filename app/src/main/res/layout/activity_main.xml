@@ -5,10 +5,13 @@
     android:orientation="vertical"
     >
 
-    <com.walts.ideas.SlidingTabLayout
-        android:id="@+id/slidingTabLayout"
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:pstsShouldExpand="true"
+        style="@style/PagerSlidingTabStrip"
         />
 
     <android.support.v4.view.ViewPager

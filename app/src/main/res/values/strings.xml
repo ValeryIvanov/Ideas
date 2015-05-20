@@ -18,7 +18,7 @@
     <string name="action_remove_password">Remove password</string>
 
     <!--Titles-->
-    <string name="title_activity_list_ideas">Ideas</string>
+    <string name="title_activity_main">Ideas</string>
     <string name="title_activity_create_idea">Create Idea</string>
     <string name="title_activity_edit_idea">Edit idea</string>
     <string name="title_activity_view_idea">View idea</string>

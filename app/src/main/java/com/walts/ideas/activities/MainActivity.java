@@ -8,8 +8,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.walts.ideas.R;
-import com.walts.ideas.SlidingTabLayout;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -20,21 +20,20 @@ public class MainActivity extends ActionBarActivity {
 
     private Context context;
 
-    @InjectView(R.id.viewPager)
-    ViewPager viewPager;
-
-    @InjectView(R.id.slidingTabLayout)
-    SlidingTabLayout slidingTabLayout;
+    @InjectView(R.id.viewPager) ViewPager viewPager;
+    @InjectView(R.id.tabs) PagerSlidingTabStrip tabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         this.context = this;
+
         ButterKnife.inject(this);
 
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
-        slidingTabLayout.setViewPager(viewPager);
+        tabs.setViewPager(viewPager);
     }
 
     public class MyPagerAdapter extends FragmentPagerAdapter {

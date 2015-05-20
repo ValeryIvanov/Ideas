@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,9 @@ import com.walts.ideas.LocationHelper;
 import com.walts.ideas.R;
 import com.walts.ideas.db.Idea;
 import com.walts.ideas.db.IdeasDbHelper;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 public class CreateIdeaActivity extends ActionBarActivity {
 
@@ -30,10 +34,20 @@ public class CreateIdeaActivity extends ActionBarActivity {
 
     private LocationHelper locationHelper;
 
+    @InjectView(R.id.latitude) TextView latitudeTextView;
+    @InjectView(R.id.longitude) TextView longitudeTextView;
+    @InjectView(R.id.address) TextView addressTextView;
+    @InjectView(R.id.location_container) LinearLayout locationContainer;
+    @InjectView(R.id.progress_bar) ProgressBar progressBar;
+    @InjectView(R.id.title) TextView titleTextView;
+    @InjectView(R.id.desc) TextView descTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_idea);
+
+        ButterKnife.inject(this);
 
         locationHelper = new LocationHelper(this);
 
@@ -81,16 +95,13 @@ public class CreateIdeaActivity extends ActionBarActivity {
     }
 
     public void createIdea(MenuItem item) {
-        TextView titleView = (TextView) this.findViewById(R.id.title_editBox);
-        String title = titleView.getText().toString().trim();
-
-        TextView descView = (TextView) this.findViewById(R.id.desc_editBox);
-        String desc = descView.getText().toString().trim();
+        String title = titleTextView.getText().toString().trim();
+        String desc = descTextView.getText().toString().trim();
 
         if (title.equals("")) {
-            titleView.setError(getString(R.string.title_required));
+            titleTextView.setError(getString(R.string.title_required));
         } else if (desc.equals("")) {
-            descView.setError(getString(R.string.desc_required));
+            descTextView.setError(getString(R.string.desc_required));
         } else {
             Idea idea = new Idea(title, desc);
 
@@ -121,7 +132,6 @@ public class CreateIdeaActivity extends ActionBarActivity {
         if (location == null) {
             item.setEnabled(false);
 
-            final ProgressBar progressBar = (android.widget.ProgressBar) findViewById(R.id.progressBar);
             progressBar.setVisibility(View.VISIBLE);
 
             LocationHelper.LocationResult locationResult = new LocationHelper.LocationResult() {
@@ -137,20 +147,16 @@ public class CreateIdeaActivity extends ActionBarActivity {
 
                                 progressBar.setVisibility(View.GONE);
 
-                                TextView latitudeTextView = (TextView) findViewById(R.id.latitude);
                                 latitudeTextView.setText(String.valueOf(location.getLatitude()));
-
-                                TextView longitudeTextView = (TextView) findViewById(R.id.longitude);
                                 longitudeTextView.setText(String.valueOf(location.getLongitude()));
 
-                                findViewById(R.id.location_container).setVisibility(View.VISIBLE);
+                                locationContainer.setVisibility(View.VISIBLE);
 
                                 item.setTitle(getString(R.string.action_remove_location));
                                 item.setIcon(R.drawable.ic_action_location_off);
                                 item.setEnabled(true);
 
                                 if (address != null) {
-                                    TextView addressTextView = (TextView) findViewById(R.id.address);
                                     addressTextView.setText(address);
                                 } else {
                                     Toast.makeText(CreateIdeaActivity.this, R.string.address_fetching_failed, Toast.LENGTH_SHORT).show();
@@ -171,31 +177,23 @@ public class CreateIdeaActivity extends ActionBarActivity {
             location = null;
             address = null;
 
-            TextView latitudeTextView = (TextView) findViewById(R.id.latitude);
             latitudeTextView.setText("");
-
-            TextView longitudeTextView = (TextView) findViewById(R.id.longitude);
             longitudeTextView.setText("");
-
-            TextView addressTextView = (TextView) findViewById(R.id.address);
             addressTextView.setText("");
 
             item.setTitle(R.string.add_current_location);
             item.setIcon(R.drawable.ic_action_place);
 
-            findViewById(R.id.location_container).setVisibility(View.GONE);
+            locationContainer.setVisibility(View.GONE);
         }
     }
 
     private void populateLocationView(Menu menu) {
         if (location != null) {
-            TextView latitudeTextView = (TextView) findViewById(R.id.latitude);
             latitudeTextView.setText(String.valueOf(location.getLatitude()));
-
-            TextView longitudeTextView = (TextView) findViewById(R.id.longitude);
             longitudeTextView.setText(String.valueOf(location.getLongitude()));
 
-            findViewById(R.id.location_container).setVisibility(View.VISIBLE);
+            locationContainer.setVisibility(View.VISIBLE);
 
             MenuItem locationItem = menu.findItem(R.id.action_add_current_location);
 
@@ -204,7 +202,6 @@ public class CreateIdeaActivity extends ActionBarActivity {
             locationItem.setEnabled(true);
         }
         if (address != null) {
-            TextView addressTextView = (TextView) findViewById(R.id.address);
             addressTextView.setText(address);
         }
     }

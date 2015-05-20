@@ -22,6 +22,9 @@ import com.walts.ideas.db.IdeasDbHelper;
 
 import java.util.concurrent.Callable;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class EditIdeaActivity extends ActionBarActivity {
 
     private static final String TAG = "EditIdeaActivity";
@@ -30,10 +33,15 @@ public class EditIdeaActivity extends ActionBarActivity {
 
     private final IdeasDbHelper dbHelper = IdeasDbHelper.getInstance(this);
 
+    @InjectView(R.id.title) TextView titleTextView;
+    @InjectView(R.id.desc) TextView descTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_idea);
+
+        ButterKnife.inject(this);
 
         Bundle bundle = getIntent().getExtras();
         long id = bundle.getLong("id");
@@ -148,25 +156,18 @@ public class EditIdeaActivity extends ActionBarActivity {
     }
 
     private void populateView() {
-        TextView titleView = (TextView) this.findViewById(R.id.title_editBox);
-        titleView.setText(idea.title);
-
-        TextView descView = (TextView) this.findViewById(R.id.desc_editBox);
-        descView.setText(idea.desc);
-
+        titleTextView.setText(idea.title);
+        descTextView.setText(idea.desc);
     }
 
     public void saveIdea(MenuItem item) {
-        TextView titleView = (TextView) this.findViewById(R.id.title_editBox);
-        String title = titleView.getText().toString().trim();
-
-        TextView descView = (TextView) this.findViewById(R.id.desc_editBox);
-        String desc = descView.getText().toString().trim();
+        String title = titleTextView.getText().toString().trim();
+        String desc = descTextView.getText().toString().trim();
 
         if (title.equals("")) {
-            titleView.setError(getString(R.string.title_required));
+            titleTextView.setError(getString(R.string.title_required));
         } else if (desc.equals("")) {
-            descView.setError(getString(R.string.desc_required));
+            descTextView.setError(getString(R.string.desc_required));
         } else {
             idea.title = title;
             idea.desc = desc;

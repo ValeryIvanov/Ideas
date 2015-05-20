@@ -36,8 +36,7 @@ public class IdeasListFragment extends Fragment {
     private List<Idea> ideas = new ArrayList<>();
     private IdeasAdapter arrayAdapter;
 
-    @InjectView(R.id.listView)
-    ListView listView;
+    @InjectView(R.id.listView) ListView listView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

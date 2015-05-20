@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,10 +34,20 @@ public class ViewIdeaActivity extends ActionBarActivity {
 
     private LocationHelper locationHelper;
 
+    @InjectView(R.id.title) TextView titleTextView;
+    @InjectView(R.id.createdDate) TextView createdDateTextView;
+    @InjectView(R.id.location_container) LinearLayout locationContainer;
+    @InjectView(R.id.latitude) TextView latitudeTextView;
+    @InjectView(R.id.longitude) TextView longitudeTextView;
+    @InjectView(R.id.address_container) LinearLayout addressContainer;
+    @InjectView(R.id.address) TextView addressTextView;
+    @InjectView(R.id.desc) TextView descTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_idea);
+
         ButterKnife.inject(this);
 
         locationHelper = new LocationHelper(this);
@@ -70,38 +81,34 @@ public class ViewIdeaActivity extends ActionBarActivity {
     }
 
     private void populateView() {
-        TextView titleView = (TextView) this.findViewById(R.id.title_textView);
-        titleView.setText(idea.title);
+        titleTextView.setText(idea.title);
 
-        TextView descView = (TextView) this.findViewById(R.id.desc_textView);
-        descView.setText(idea.desc);
-        descView.setMovementMethod(new ScrollingMovementMethod());
+        descTextView.setText(idea.desc);
+        descTextView.setMovementMethod(new ScrollingMovementMethod());
 
-        TextView createdDateView = (TextView) this.findViewById(R.id.createdDate_textView);
-        createdDateView.setText(idea.createdDate);
+        createdDateTextView.setText(idea.createdDate);
 
         if (idea.latitude > 0 && idea.longitude > 0) {
-            findViewById(R.id.location_container).setVisibility(View.VISIBLE);
 
-            TextView latitudeTextView = (TextView) findViewById(R.id.latitude);
+            locationContainer.setVisibility(View.VISIBLE);
+
             latitudeTextView.setText(String.valueOf(idea.latitude));
-
-            TextView longitudeTextView = (TextView) findViewById(R.id.longitude);
             longitudeTextView.setText(String.valueOf(idea.longitude));
 
             if (idea.address != null && idea.address.length() > 0) {
-                findViewById(R.id.address_container).setVisibility(View.VISIBLE);
 
-                TextView addressTextView = (TextView) findViewById(R.id.address);
+                addressContainer.setVisibility(View.VISIBLE);
+
                 addressTextView.setText(String.valueOf(idea.address));
+
             } else {
+
                 String address = locationHelper.getAddress(idea.latitude, idea.longitude);
                 if (address != null) {
                     idea.address = address;
 
-                    findViewById(R.id.address_container).setVisibility(View.VISIBLE);
+                    addressContainer.setVisibility(View.VISIBLE);
 
-                    TextView addressTextView = (TextView) findViewById(R.id.address);
                     addressTextView.setText(String.valueOf(idea.address));
 
                     dbHelper.updateIdea(idea);

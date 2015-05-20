@@ -9,14 +9,14 @@
     >
 
     <EditText
-        android:id="@+id/title_editBox"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/title"
         />
 
     <EditText
-        android:id="@+id/desc_editBox"
+        android:id="@+id/desc"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -34,7 +34,7 @@
             android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/progressBar"
+            android:id="@+id/progress_bar"
             />
 
         <LinearLayout
