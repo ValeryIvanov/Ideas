@@ -3,17 +3,16 @@ package com.walts.ideas.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 
 import com.walts.ideas.R;
+import com.walts.ideas.SlidingTabLayout;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-
 
 public class MainActivity extends ActionBarActivity {
 
@@ -24,6 +23,9 @@ public class MainActivity extends ActionBarActivity {
     @InjectView(R.id.viewPager)
     ViewPager viewPager;
 
+    @InjectView(R.id.slidingTabLayout)
+    SlidingTabLayout slidingTabLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +34,7 @@ public class MainActivity extends ActionBarActivity {
         ButterKnife.inject(this);
 
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        slidingTabLayout.setViewPager(viewPager);
     }
 
     public class MyPagerAdapter extends FragmentPagerAdapter {
