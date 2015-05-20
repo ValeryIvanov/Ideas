@@ -2,12 +2,17 @@ package com.walts.ideas.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.walts.ideas.SHA1;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class IdeasDbHelper extends SQLiteOpenHelper {
@@ -16,16 +21,25 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "IdeasDbHelper";
 
-    private static final String SQL_CREATE_TABLES = "CREATE TABLE idea (id INTEGER PRIMARY KEY, title TEXT, desc TEXT, created_date DATE DEFAULT (datetime('now','localtime')), password TEXT)";
+    private static final String SQL_CREATE_TABLES = "CREATE TABLE idea (" +
+            "id INTEGER PRIMARY KEY, " +
+            "title TEXT, desc TEXT, " +
+            "created_date DATE DEFAULT (datetime('now','localtime')), " +
+            "password TEXT, " +
+            "latitude REAL, " +
+            "longitude REAL, " +
+            "address TEXT" +
+            ")";
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ideas";
 
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "Ideas.db";
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "Ideas.db";
 
     //http://stackoverflow.com/questions/18147354/sqlite-connection-leaked-although-everything-closed
     public static IdeasDbHelper getInstance(Context context) {
         if (dbHelper == null) {
             dbHelper = new IdeasDbHelper(context.getApplicationContext());
+            //dbHelper.createTestIdeas(context);
         }
         return dbHelper;
     }
@@ -39,6 +53,42 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_TABLES);
     }
 
+    private void createTestIdeas(Context context) {
+        try {
+            AssetManager assetManager = context.getAssets();
+            InputStream inputStream = assetManager.open("lorem-ipsum.txt");
+
+            BufferedReader bufferedReader = null;
+            StringBuilder stringBuilder = new StringBuilder();
+
+            try {
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (bufferedReader != null) {
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            String loremIpsumString = stringBuilder.toString();
+            int numberOfIdeasToCreate = 2;
+            for (int i = 0; i < numberOfIdeasToCreate; i++) {
+                Idea idea = new Idea("Lorem ipsum idea #" + (i + 1), loremIpsumString);
+                insertIdea(idea);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_ENTRIES);
@@ -50,6 +100,9 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("title", idea.title);
         values.put("desc", idea.desc);
+        values.put("latitude", idea.latitude);
+        values.put("longitude", idea.longitude);
+        values.put("address", idea.address);
         return db.insert("idea", null, values);
     }
 
@@ -58,6 +111,9 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("title", idea.title);
         values.put("desc", idea.desc);
+        values.put("latitude", idea.latitude);
+        values.put("longitude", idea.longitude);
+        values.put("address", idea.address);
         return db.update("idea", values, "id  = ?", new String[] {String.valueOf(idea.id)});
     }
 
@@ -77,6 +133,9 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
                 idea.id = cursor.getLong(0);
                 idea.createdDate = cursor.getString(3);
                 idea.password = cursor.getString(4);
+                idea.latitude = cursor.getDouble(5);
+                idea.longitude = cursor.getDouble(6);
+                idea.address = cursor.getString(7);
             } while (cursor.moveToNext());
         }
         cursor.close();

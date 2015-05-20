@@ -24,6 +24,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:id="@+id/desc"
         android:layout_below="@+id/createdDate"
         android:layout_centerHorizontal="true" />

@@ -9,14 +9,6 @@
     android:orientation="vertical"
     >
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/edit_idea"
-        android:gravity="center"
-        />
-
     <EditText
         android:id="@+id/title_editBox"
         android:layout_width="match_parent"
@@ -31,26 +23,6 @@
         android:layout_weight="1"
         android:gravity="top"
         android:hint="@string/description"
-        />
-
-    <Button
-        android:id="@+id/password_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="deleteIdea"
-        android:text="@string/delete"
-        />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="saveIdea"
-        android:text="@string/save"
         />
 
 </LinearLayout>
