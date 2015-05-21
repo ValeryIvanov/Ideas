@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.text.InputType;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.walts.ideas.IdeasAdapter;
 import com.walts.ideas.R;
@@ -30,13 +33,15 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.Optional;
 
 public class IdeasListFragment extends Fragment {
 
     private List<Idea> ideas = new ArrayList<>();
     private IdeasAdapter arrayAdapter;
 
-    @InjectView(R.id.listView) ListView listView;
+    @Optional @InjectView(R.id.listView) ListView listView;
+    @Optional @InjectView(R.id.motivational_text) TextView motivationalTextTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,13 +50,23 @@ public class IdeasListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.ideas_list_fragment, container, false);
-        ButterKnife.inject(this, rootView);
+        int numberOfIdeas = populateIdeas();
 
-        populateIdeas();
-        populateListView();
-        registerClickCallback();
+        View rootView;
 
+        if (numberOfIdeas == 0) {
+            rootView = inflater.inflate(R.layout.card_fragment, container, false);
+            ButterKnife.inject(this, rootView);
+
+            Spanned motivationalText = Html.fromHtml(getString(R.string.motivational_text));
+            motivationalTextTextView.setText(motivationalText);
+        } else {
+            rootView = inflater.inflate(R.layout.ideas_list_fragment, container, false);
+            ButterKnife.inject(this, rootView);
+
+            populateListView();
+            registerClickCallback();
+        }
         return rootView;
     }
 
@@ -93,10 +108,11 @@ public class IdeasListFragment extends Fragment {
         getActivity().finish();
     }
 
-    private void populateIdeas() {
+    private int populateIdeas() {
         IdeasDbHelper dbHelper = IdeasDbHelper.getInstance(getActivity());
         ideas = dbHelper.getAllIdeas();
         Collections.reverse(ideas); //show newest first
+        return ideas.size();
     }
 
     private void registerClickCallback() {

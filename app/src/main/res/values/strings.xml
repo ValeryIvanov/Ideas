@@ -56,4 +56,12 @@
     <string name="add_current_location">Add current location</string>
     <string name="remove_location_message">You will not be able to add location to this idea back!</string>
 
+    <string name="motivational_text">
+        <![CDATA[
+        <p><b>Creedy:</b> Die! Die! Why won\'t you die?... Why won\'t you die?<p>
+        <p><b>V:</b> Beneath this mask there is more than flesh. Beneath this mask there is an idea, Mr. Creedy, and ideas are bulletproof.</p>
+        <p>From the movie <b>V for Vendetta (2005)</p></b>
+        ]]>
+    </string>
+
 </resources>

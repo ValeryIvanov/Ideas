@@ -39,7 +39,7 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
     public static IdeasDbHelper getInstance(Context context) {
         if (dbHelper == null) {
             dbHelper = new IdeasDbHelper(context.getApplicationContext());
-            dbHelper.createTestIdeas(context);
+            //dbHelper.createTestIdeas(context);
         }
         return dbHelper;
     }
