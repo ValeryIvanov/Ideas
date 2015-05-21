@@ -43,6 +43,8 @@ public class IdeasListFragment extends Fragment {
     @Optional @InjectView(R.id.listView) ListView listView;
     @Optional @InjectView(R.id.motivational_text) TextView motivationalTextTextView;
 
+    private int numberOfIdeas;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +52,7 @@ public class IdeasListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        int numberOfIdeas = populateIdeas();
+        numberOfIdeas = populateIdeas();
 
         View rootView;
 
@@ -81,6 +83,15 @@ public class IdeasListFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.menu_list_ideas, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (numberOfIdeas == 0) {
+            menu.findItem(R.id.action_sort_by_title).setVisible(false);
+            menu.findItem(R.id.action_sort_by_created_date).setVisible(false);
+        }
     }
 
     @Override
