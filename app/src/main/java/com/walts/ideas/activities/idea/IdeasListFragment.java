@@ -1,4 +1,4 @@
-package com.walts.ideas.activities;
+package com.walts.ideas.activities.idea;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,9 +21,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.walts.ideas.IdeasAdapter;
+import com.walts.ideas.adapter.IdeasAdapter;
 import com.walts.ideas.R;
-import com.walts.ideas.SHA1;
+import com.walts.ideas.helpers.SHA1;
 import com.walts.ideas.db.Idea;
 import com.walts.ideas.db.IdeasDbHelper;
 

@@ -23,19 +23,38 @@
             </intent-filter>
         </activity>
 
+        <!-- IDEA -->
+
         <activity
-            android:name=".activities.CreateIdeaActivity"
+            android:name=".activities.idea.CreateIdeaActivity"
             android:label="@string/title_activity_create_idea" >
         </activity>
 
         <activity
-            android:name=".activities.EditIdeaActivity"
+            android:name=".activities.idea.EditIdeaActivity"
             android:label="@string/title_activity_edit_idea" >
         </activity>
 
         <activity
-            android:name=".activities.ViewIdeaActivity"
+            android:name=".activities.idea.ViewIdeaActivity"
             android:label="@string/title_activity_view_idea" >
+        </activity>
+
+        <!-- QUESTION -->
+
+        <activity
+            android:name=".activities.question.CreateQuestionActivity"
+            android:label="@string/title_activity_create_question" >
+        </activity>
+
+        <activity
+            android:name=".activities.question.EditQuestionActivity"
+            android:label="@string/title_activity_edit_question" >
+        </activity>
+
+        <activity
+            android:name=".activities.question.ViewQuestionActivity"
+            android:label="@string/title_activity_view_question" >
         </activity>
 
     </application>

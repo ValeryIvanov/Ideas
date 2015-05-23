@@ -4,8 +4,8 @@
     >
 
     <item
-        android:id="@+id/action_create_new_idea"
-        android:title="@string/action_create_new_idea"
+        android:id="@+id/action_create_new_question"
+        android:title="@string/action_create_new_question"
         android:icon="@drawable/ic_action_new"
         app:showAsAction="ifRoom"
         />
@@ -17,8 +17,8 @@
         />
 
     <item
-        android:id="@+id/action_sort_by_title"
-        android:title="@string/action_sort_by_title"
+        android:id="@+id/action_sort_by_question"
+        android:title="@string/action_sort_by_question"
         app:showAsAction="never"
         />
 

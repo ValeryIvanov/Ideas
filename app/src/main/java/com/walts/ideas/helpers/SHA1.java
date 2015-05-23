@@ -1,4 +1,4 @@
-package com.walts.ideas;
+package com.walts.ideas.helpers;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

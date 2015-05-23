@@ -16,12 +16,19 @@
     <string name="action_sort_by_created_date">Sort by created date</string>
     <string name="action_password_protect">Password protect</string>
     <string name="action_remove_password">Remove password</string>
+    <string name="action_sort_by_question">Sort by question</string>
+    <string name="action_create_new_question">Create new question</string>
 
     <!--Titles-->
     <string name="title_activity_main">Ideas</string>
-    <string name="title_activity_create_idea">Create Idea</string>
+
+    <string name="title_activity_create_idea">Create new idea</string>
     <string name="title_activity_edit_idea">Edit idea</string>
     <string name="title_activity_view_idea">View idea</string>
+
+    <string name="title_activity_create_question">Create new question</string>
+    <string name="title_activity_edit_question">Edit question</string>
+    <string name="title_activity_view_question">View question</string>
 
     <!--Notifications-->
     <string name="something_went_wrong">Something went wrong</string>
@@ -63,5 +70,6 @@
         <p>From the movie <b>V for Vendetta (2005)</p></b>
         ]]>
     </string>
+
 
 </resources>

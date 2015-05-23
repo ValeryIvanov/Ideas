@@ -2,12 +2,10 @@ package com.walts.ideas.db;
 
 import java.io.Serializable;
 
-public class Idea implements Serializable {
+public class Idea extends Entity implements Serializable {
 
-    public long id;
     public String title;
     public String desc;
-    public String createdDate;
     public String password; //SHA1
     public double latitude;
     public double longitude;

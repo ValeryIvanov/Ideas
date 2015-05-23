@@ -1,4 +1,4 @@
-package com.walts.ideas;
+package com.walts.ideas.helpers;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +12,10 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
+import com.walts.ideas.helpers.Dialogs;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,9 +42,9 @@ public class LocationHelper {
     private double lastLongitude;
     private String lastAddress;
 
-    private final ActionBarActivity activity;
+    private final AppCompatActivity activity;
 
-    public LocationHelper(ActionBarActivity activity) {
+    public LocationHelper(AppCompatActivity activity) {
         locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
         geocoder = new Geocoder(activity, Locale.getDefault());
         this.activity = activity;
@@ -183,7 +185,7 @@ public class LocationHelper {
         }
     }
 
-    private boolean isNetworkAvailable(ActionBarActivity activity) {
+    private boolean isNetworkAvailable(AppCompatActivity activity) {
         ConnectivityManager connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         boolean status = networkInfo != null && networkInfo.isConnected() && networkInfo.isAvailable();

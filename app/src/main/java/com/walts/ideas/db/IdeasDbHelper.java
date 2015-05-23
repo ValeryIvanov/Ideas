@@ -2,18 +2,15 @@ package com.walts.ideas.db;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.walts.ideas.SHA1;
+import com.walts.ideas.helpers.FileHelpers;
+import com.walts.ideas.helpers.SHA1;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 public class IdeasDbHelper extends SQLiteOpenHelper {
 
@@ -21,77 +18,67 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "IdeasDbHelper";
 
-    private static final String SQL_CREATE_TABLES = "CREATE TABLE idea (" +
-            "id INTEGER PRIMARY KEY, " +
-            "title TEXT, desc TEXT, " +
-            "created_date DATE DEFAULT (datetime('now','localtime')), " +
-            "password TEXT, " +
-            "latitude REAL, " +
-            "longitude REAL, " +
-            "address TEXT" +
-            ")";
-    private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ideas";
-
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "Ideas.db";
+
+    private static final String LOREM_IPSUM_FILE = "lorem-ipsum.txt";
+    private static final String CREATE_TABLES_SQL_FILE = "CREATE_TABLES.sql";
+    private static final String DROP_TABLES_SQL_FILE = "DROP_TABLES.sql";
+
+    private Context context;
 
     //http://stackoverflow.com/questions/18147354/sqlite-connection-leaked-although-everything-closed
     public static IdeasDbHelper getInstance(Context context) {
         if (dbHelper == null) {
             dbHelper = new IdeasDbHelper(context.getApplicationContext());
             //dbHelper.createTestIdeas(context);
+            dbHelper.createTestQuestions(context);
         }
         return dbHelper;
     }
 
+    private void createTestQuestions(Context context) {
+        int numberOfQuestionsToCreate = 20;
+        for (int i = 0; i < numberOfQuestionsToCreate; i++) {
+            Question question = new Question("Question #" + (i + 1));
+            insertQuestion(question);
+        }
+    }
+
+    private long insertQuestion(Question question) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("question", question.question);
+        return db.insert("question", null, values);
+    }
+
     private IdeasDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_TABLES);
+        String createTablesSqlString = FileHelpers.getTextFileContent(context, CREATE_TABLES_SQL_FILE);
+        String[] queries = createTablesSqlString.split(";");
+        for (String query : queries) {
+            db.execSQL(query);
+        }
     }
 
     private void createTestIdeas(Context context) {
-        try {
-            AssetManager assetManager = context.getAssets();
-            InputStream inputStream = assetManager.open("lorem-ipsum.txt");
-
-            BufferedReader bufferedReader = null;
-            StringBuilder stringBuilder = new StringBuilder();
-
-            try {
-                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(line);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (bufferedReader != null) {
-                    try {
-                        bufferedReader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            String loremIpsumString = stringBuilder.toString();
-            int numberOfIdeasToCreate = 20;
-            for (int i = 0; i < numberOfIdeasToCreate; i++) {
-                Idea idea = new Idea("Lorem ipsum idea #" + (i + 1), loremIpsumString);
-                insertIdea(idea);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        String loremIpsumString = FileHelpers.getTextFileContent(context, LOREM_IPSUM_FILE);
+        int numberOfIdeasToCreate = 20;
+        for (int i = 0; i < numberOfIdeasToCreate; i++) {
+            Idea idea = new Idea("Lorem ipsum idea #" + (i + 1), loremIpsumString);
+            insertIdea(idea);
         }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_DELETE_ENTRIES);
+        String createTablesSqlString = FileHelpers.getTextFileContent(context, DROP_TABLES_SQL_FILE);
+        db.execSQL(createTablesSqlString);
         onCreate(db);
     }
 
@@ -172,5 +159,22 @@ public class IdeasDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("password", SHA1.sha1Hash(idea.password));
         return db.update("idea", values, "id  = ?", new String[] {String.valueOf(idea.id)});
+    }
+
+    public List<Question> getAllQuestions() {
+        ArrayList<Question> questionEntities = new ArrayList<>();
+        String selectQuery = "SELECT * FROM question";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Question question = new Question(cursor.getString(1));
+                question.id = cursor.getLong(0);
+                question.createdDate = cursor.getString(2);
+                questionEntities.add(question);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return questionEntities;
     }
 }

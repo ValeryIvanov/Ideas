@@ -1,11 +1,12 @@
-package com.walts.ideas;
+package com.walts.ideas.helpers;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.walts.ideas.R;
 import com.walts.ideas.activities.MainActivity;
 import com.walts.ideas.db.Idea;
 import com.walts.ideas.db.IdeasDbHelper;
@@ -14,7 +15,7 @@ import java.util.concurrent.Callable;
 
 public class Dialogs {
 
-    private static void deleteIdea(final ActionBarActivity activity, final Idea idea) {
+    private static void deleteIdea(final AppCompatActivity activity, final Idea idea) {
         int rowsAffected = IdeasDbHelper.getInstance(activity).deleteIdea(idea.id);
         if (rowsAffected == 1) {
             Intent intent = new Intent(activity, MainActivity.class);
@@ -34,7 +35,7 @@ public class Dialogs {
         }
     }
 
-    public static void showDeleteDialog(final ActionBarActivity activity, final Idea idea) {
+    public static void showDeleteDialog(final AppCompatActivity activity, final Idea idea) {
         showConfirmationDialog(activity, activity.getResources().getString(R.string.delete_this_idea), new Callable() {
             @Override
             public Object call() throws Exception {
@@ -44,7 +45,7 @@ public class Dialogs {
         });
     }
 
-    public static void showConfirmationDialog(final ActionBarActivity activity, String message, final Callable function) {
+    public static void showConfirmationDialog(final AppCompatActivity activity, String message, final Callable function) {
         new AlertDialog.Builder(activity)
                 .setTitle(R.string.are_you_sure)
                 .setMessage(message)
@@ -61,7 +62,7 @@ public class Dialogs {
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
-    public static void showAlertMessage(final ActionBarActivity activity, final Intent intent, String message) {
+    public static void showAlertMessage(final AppCompatActivity activity, final Intent intent, String message) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage(message)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {

@@ -1,29 +1,24 @@
-package com.walts.ideas;
+package com.walts.ideas.adapter;
 
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.walts.ideas.R;
 import com.walts.ideas.db.Idea;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class IdeasAdapter extends ArrayAdapter<Idea> {
+public class IdeasAdapter extends BaseArrayAdapter<Idea> {
 
     private boolean titleSortAsc = true;
-    private boolean createdDateSortAsc = true;
-    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private final Context context;
 
     public IdeasAdapter(Context context, int resource, List<Idea> objects) {
@@ -35,13 +30,13 @@ public class IdeasAdapter extends ArrayAdapter<Idea> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = ((Activity) context).getLayoutInflater();
 
-        ViewHolder holder;
+        IdeaViewHolder holder;
 
         if (convertView != null) {
-            holder = (ViewHolder) convertView.getTag();
+            holder = (IdeaViewHolder) convertView.getTag();
         } else {
             convertView = layoutInflater.inflate(R.layout.idea, parent, false);
-            holder = new ViewHolder(convertView);
+            holder = new IdeaViewHolder(convertView);
             convertView.setTag(holder);
         }
         Idea idea = getItem(position);
@@ -57,12 +52,12 @@ public class IdeasAdapter extends ArrayAdapter<Idea> {
         return convertView;
     }
 
-    static class ViewHolder {
+    protected class IdeaViewHolder {
         @InjectView(R.id.title) TextView title;
         @InjectView(R.id.desc) TextView desc;
         @InjectView(R.id.createdDate) TextView createdDate;
 
-        public ViewHolder(View view) {
+        public IdeaViewHolder(View view) {
             ButterKnife.inject(this, view);
         }
     }
@@ -88,38 +83,6 @@ public class IdeasAdapter extends ArrayAdapter<Idea> {
         } else {
             this.sort(titleComparatorDesc);
             titleSortAsc = true;
-        }
-    }
-
-    private final Comparator<Idea> createdDateComparatorAsc = new Comparator<Idea>() {
-        @Override
-        public int compare(Idea idea1, Idea idea2) {
-            try {
-                return dateFormat.parse(idea1.createdDate).compareTo((dateFormat.parse(idea2.createdDate)));
-            } catch (ParseException e) {
-                return 0;
-            }
-        }
-    };
-
-    private final Comparator<Idea> createdDateComparatorDesc = new Comparator<Idea>() {
-        @Override
-        public int compare(Idea idea1, Idea idea2) {
-            try {
-                return dateFormat.parse(idea2.createdDate).compareTo((dateFormat.parse(idea1.createdDate)));
-            } catch (ParseException e) {
-                return 0;
-            }
-        }
-    };
-
-    public void sortByCreatedDate() {
-        if (createdDateSortAsc) {
-            this.sort(createdDateComparatorAsc);
-            createdDateSortAsc = false;
-        } else {
-            this.sort(createdDateComparatorDesc);
-            createdDateSortAsc = true;
         }
     }
 

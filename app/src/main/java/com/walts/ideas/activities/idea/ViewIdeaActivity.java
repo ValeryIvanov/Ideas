@@ -1,9 +1,8 @@
-package com.walts.ideas.activities;
+package com.walts.ideas.activities.idea;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,9 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.walts.ideas.Dialogs;
-import com.walts.ideas.LocationHelper;
+import com.walts.ideas.helpers.Dialogs;
+import com.walts.ideas.helpers.LocationHelper;
 import com.walts.ideas.R;
+import com.walts.ideas.activities.MainActivity;
 import com.walts.ideas.db.Idea;
 import com.walts.ideas.db.IdeasDbHelper;
 
@@ -24,7 +24,7 @@ import java.util.concurrent.Callable;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ViewIdeaActivity extends ActionBarActivity {
+public class ViewIdeaActivity extends AppCompatActivity {
 
     private static final String TAG = "ViewIdeaActivity";
 
